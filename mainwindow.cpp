@@ -77,6 +77,7 @@ void MainWindow::on_black_and_white_filename_returnPressed()
     string filename = qfilename.toStdString();
     try{
         Image image(filename);
+        ui->black_and_white_error_message->setText("");
         ui->black_and_white_error_message->setVisible(false);
         ui->black_and_white_filename->setReadOnly(true);
         for (int i = 0; i < image.width; i++){
@@ -136,6 +137,56 @@ void MainWindow::on_black_and_white_savesame_clicked()
     QString qfilename = ui->black_and_white_filename->text();
     string filename = qfilename.toStdString();
     out_image.saveImage(filename);
+    ui->black_and_white_savesuccessful->setVisible(true);
+    this_thread::sleep_for(chrono::seconds(3));
+    ui->black_and_white_filename->setText("");
+    ui->black_and_white_newfilename->setText("");
+    ui->black_and_white_savenew->setVisible(false);
+    ui->black_and_white_savesame->setVisible(false);
+    ui->black_and_white_error_message->setVisible(false);
+    ui->black_and_white_error_message2->setVisible(false);
+    ui->black_and_white_label2->setVisible(false);
+    ui->black_and_white_newfilename->setVisible(false);
+    ui->black_and_white_savesuccessful->setVisible(false);
+    ui->black_and_white_newfilename->setReadOnly(false);
+    ui->black_and_white_filename->setReadOnly(false);
+    ui->black_and_white_savesuccessful->setVisible(false);
+    ui->stackedWidget->setCurrentIndex(0);
+}
 
+
+void MainWindow::on_black_and_white_newfilename_returnPressed()
+{
+    try{
+        QString qnew_filename = ui->black_and_white_newfilename->text();
+        string new_filename = qnew_filename.toStdString();
+        out_image.saveImage(new_filename);
+        ui->black_and_white_error_message2->setText("");
+        ui->black_and_white_error_message2->setVisible(false);
+        ui->black_and_white_newfilename->setReadOnly(true);
+        ui->black_and_white_savesuccessful->setVisible(true);
+        this_thread::sleep_for(chrono::seconds(3));
+        ui->black_and_white_filename->setText("");
+        ui->black_and_white_newfilename->setText("");
+        ui->black_and_white_savenew->setVisible(false);
+        ui->black_and_white_savesame->setVisible(false);
+        ui->black_and_white_error_message->setVisible(false);
+        ui->black_and_white_error_message2->setVisible(false);
+        ui->black_and_white_label2->setVisible(false);
+        ui->black_and_white_newfilename->setVisible(false);
+        ui->black_and_white_savesuccessful->setVisible(false);
+        ui->black_and_white_newfilename->setReadOnly(false);
+        ui->black_and_white_filename->setReadOnly(false);
+        ui->black_and_white_savesuccessful->setVisible(false);
+        ui->stackedWidget->setCurrentIndex(0);
+
+    }
+    catch (const invalid_argument& e) {
+        QString qerror_message = QString::fromStdString(e.what());
+        ui->black_and_white_error_message2->setVisible(true);
+        ui->black_and_white_error_message2->setStyleSheet("color: red");
+        ui->black_and_white_error_message2->setText(qerror_message);
+        ui->black_and_white_newfilename->setFocus();
+    }
 }
 

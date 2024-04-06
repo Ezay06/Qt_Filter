@@ -274,12 +274,12 @@
        <rect>
         <x>210</x>
         <y>400</y>
-        <width>301</width>
+        <width>331</width>
         <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>Image Saved Successfully</string>
+       <string>Image Saved Successfully. Returning to menu.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

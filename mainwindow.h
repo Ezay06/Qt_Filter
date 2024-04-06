@@ -36,6 +36,8 @@ private slots:
 
     void on_black_and_white_savesame_clicked();
 
+    void on_black_and_white_newfilename_returnPressed();
+
 private:
     Ui::MainWindow *ui;
 };

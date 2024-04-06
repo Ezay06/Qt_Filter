@@ -11,6 +11,8 @@
 #include <thread>
 using namespace std;
 
+#include <QTimer>
+
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "Image_Class_1.h"
@@ -138,20 +140,22 @@ void MainWindow::on_black_and_white_savesame_clicked()
     string filename = qfilename.toStdString();
     out_image.saveImage(filename);
     ui->black_and_white_savesuccessful->setVisible(true);
-    this_thread::sleep_for(chrono::seconds(3));
-    ui->black_and_white_filename->setText("");
-    ui->black_and_white_newfilename->setText("");
-    ui->black_and_white_savenew->setVisible(false);
-    ui->black_and_white_savesame->setVisible(false);
-    ui->black_and_white_error_message->setVisible(false);
-    ui->black_and_white_error_message2->setVisible(false);
-    ui->black_and_white_label2->setVisible(false);
-    ui->black_and_white_newfilename->setVisible(false);
-    ui->black_and_white_savesuccessful->setVisible(false);
-    ui->black_and_white_newfilename->setReadOnly(false);
-    ui->black_and_white_filename->setReadOnly(false);
-    ui->black_and_white_savesuccessful->setVisible(false);
-    ui->stackedWidget->setCurrentIndex(0);
+    QTimer::singleShot(3000, this, [this](){
+        ui->black_and_white_filename->setText("");
+        ui->black_and_white_newfilename->setText("");
+        ui->black_and_white_savenew->setVisible(false);
+        ui->black_and_white_savesame->setVisible(false);
+        ui->black_and_white_error_message->setVisible(false);
+        ui->black_and_white_error_message2->setVisible(false);
+        ui->black_and_white_label2->setVisible(false);
+        ui->black_and_white_newfilename->setVisible(false);
+        ui->black_and_white_savesuccessful->setVisible(false);
+        ui->black_and_white_newfilename->setReadOnly(false);
+        ui->black_and_white_filename->setReadOnly(false);
+        ui->black_and_white_savesuccessful->setVisible(false);
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+
 }
 
 

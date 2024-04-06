@@ -23,6 +23,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Qt_Filter
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        stb_image.h stb_image_1.h stb_image_write.h stb_image_write_1.h
+        Image_Class.h Image_Class_1.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Qt_Filter APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

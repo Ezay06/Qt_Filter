@@ -17,6 +17,25 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_black_and_white_button_clicked();
+
+    void on_flip_button_clicked();
+
+    void on_crop_button_clicked();
+
+    void on_resize_button_clicked();
+
+    void on_purple_button_clicked();
+
+    void on_old_tv_button_clicked();
+
+    void on_black_and_white_filename_returnPressed();
+
+    void on_black_and_white_savenew_clicked();
+
+    void on_black_and_white_savesame_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

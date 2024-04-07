@@ -36,7 +36,20 @@ private slots:
 
     void on_black_and_white_savesame_clicked();
 
-    void on_black_and_white_newfilename_returnPressed();
+
+    void on_newsave_browse_clicked();
+
+    void on_newsave_newfilename_returnPressed();
+
+    void on_flip_filename_returnPressed();
+
+    void on_flip_V_clicked();
+
+    void on_flip_H_clicked();
+
+    void on_flip_savenew_clicked();
+
+    void on_flip_savesame_clicked();
 
 private:
     Ui::MainWindow *ui;

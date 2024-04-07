@@ -30,18 +30,13 @@ private slots:
 
     void on_old_tv_button_clicked();
 
-    void on_black_and_white_filename_returnPressed();
-
     void on_black_and_white_savenew_clicked();
 
     void on_black_and_white_savesame_clicked();
 
-
     void on_newsave_browse_clicked();
 
     void on_newsave_newfilename_returnPressed();
-
-    void on_flip_filename_returnPressed();
 
     void on_flip_V_clicked();
 
@@ -50,6 +45,8 @@ private slots:
     void on_flip_savenew_clicked();
 
     void on_flip_savesame_clicked();
+
+    void on_load_browse_clicked();
 
 private:
     Ui::MainWindow *ui;

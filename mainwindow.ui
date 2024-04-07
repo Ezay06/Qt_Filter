@@ -17,17 +17,17 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>0</y>
       <width>951</width>
       <height>581</height>
      </rect>
     </property>
-    <widget class="QWidget" name="Menu">
-     <widget class="QLabel" name="title_menu">
+    <widget class="QWidget" name="load">
+     <widget class="QLabel" name="title">
       <property name="geometry">
        <rect>
-        <x>240</x>
+        <x>270</x>
         <y>30</y>
         <width>371</width>
         <height>20</height>
@@ -40,17 +40,61 @@
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QLabel" name="load_label">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>130</y>
+        <width>221</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Select image to load: </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="load_browse">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>150</y>
+        <width>101</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="load_errormessage">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>155</y>
+        <width>161</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Menu">
      <widget class="QLabel" name="menu_header">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>100</y>
+        <x>250</x>
+        <y>20</y>
         <width>381</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
        <string>Choose the editing mode or filter:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QPushButton" name="black_and_white_button">
@@ -149,55 +193,14 @@
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="black_and_white_label1">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>100</y>
-        <width>201</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Enter the path of the image:</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="black_and_white_filename">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>120</y>
-        <width>661</width>
-        <height>26</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="black_and_white_error_message">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>150</y>
-        <width>461</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
      <widget class="QPushButton" name="black_and_white_savenew">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>210</y>
+        <x>200</x>
+        <y>130</y>
         <width>171</width>
         <height>61</height>
        </rect>
@@ -208,12 +211,12 @@
      </widget>
      <widget class="QPushButton" name="black_and_white_savesame">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>280</y>
+        <x>540</x>
+        <y>130</y>
         <width>171</width>
         <height>61</height>
        </rect>
@@ -225,8 +228,8 @@
      <widget class="QLabel" name="black_and_white_savesuccessful">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>410</y>
+        <x>280</x>
+        <y>230</y>
         <width>331</width>
         <height>41</height>
        </rect>
@@ -256,29 +259,6 @@
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="flip_label1">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>110</y>
-        <width>311</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Enter the path of the image:</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="flip_filename">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>140</y>
-        <width>601</width>
-        <height>26</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QLabel" name="flip_errormessage">
       <property name="geometry">
        <rect>
@@ -294,12 +274,12 @@
      </widget>
      <widget class="QPushButton" name="flip_V">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>250</y>
+        <x>330</x>
+        <y>110</y>
         <width>93</width>
         <height>51</height>
        </rect>
@@ -310,12 +290,12 @@
      </widget>
      <widget class="QPushButton" name="flip_H">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>190</x>
-        <y>250</y>
+        <x>490</x>
+        <y>110</y>
         <width>93</width>
         <height>51</height>
        </rect>
@@ -327,8 +307,8 @@
      <widget class="QLabel" name="flip_label2">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>230</y>
+        <x>280</x>
+        <y>70</y>
         <width>371</width>
         <height>20</height>
        </rect>
@@ -343,8 +323,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>660</x>
-        <y>230</y>
+        <x>350</x>
+        <y>190</y>
         <width>211</width>
         <height>51</height>
        </rect>
@@ -359,8 +339,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>660</x>
-        <y>300</y>
+        <x>350</x>
+        <y>250</y>
         <width>211</width>
         <height>51</height>
        </rect>
@@ -372,8 +352,8 @@
      <widget class="QLabel" name="flip_savesuccessful">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>420</y>
+        <x>300</x>
+        <y>350</y>
         <width>321</width>
         <height>20</height>
        </rect>

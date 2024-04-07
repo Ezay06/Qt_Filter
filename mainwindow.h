@@ -48,6 +48,12 @@ private slots:
 
     void on_load_browse_clicked();
 
+    void on_crop_crop_clicked();
+
+    void on_crop_savesame_clicked();
+
+    void on_crop_savenew_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -319,7 +319,7 @@
      </widget>
      <widget class="QPushButton" name="flip_savenew">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -335,7 +335,7 @@
      </widget>
      <widget class="QPushButton" name="flip_savesame">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -366,7 +366,170 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="crop"/>
+    <widget class="QWidget" name="crop">
+     <widget class="QLabel" name="crop_menu">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>20</y>
+        <width>191</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Crop Image</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="crop_label1">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>80</y>
+        <width>311</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enter the position from which you want to crop: </string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="crop_positionx">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>110</y>
+        <width>113</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>position X</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="crop_positiony">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>110</y>
+        <width>113</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>position Y</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="crop_label2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>180</y>
+        <width>301</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enter the dimensions you want to crop to:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="crop_width">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>210</y>
+        <width>113</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>width</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="crop_height">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>210</y>
+        <width>113</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>height</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="crop_savenew">
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>180</y>
+        <width>211</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as new image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="crop_savesame">
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>90</y>
+        <width>211</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save to same path and name</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="crop_crop">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>260</y>
+        <width>93</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Crop</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="crop_errormessage">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>280</y>
+        <width>321</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="crop_savesuccessful">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>330</y>
+        <width>321</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Image saved successfully. Returning to menu...</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="resize"/>
     <widget class="QWidget" name="purple"/>
     <widget class="QWidget" name="old_tv"/>
@@ -426,19 +589,6 @@
        <string>Browse...</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>150</y>
-        <width>411</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
      <widget class="QLabel" name="newsave_savesuccessuful">
       <property name="geometry">
        <rect>
@@ -460,7 +610,7 @@
        <rect>
         <x>60</x>
         <y>150</y>
-        <width>391</width>
+        <width>431</width>
         <height>20</height>
        </rect>
       </property>

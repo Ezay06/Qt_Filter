@@ -27,7 +27,7 @@
      <widget class="QLabel" name="title_menu">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>240</x>
         <y>30</y>
         <width>371</width>
         <height>20</height>

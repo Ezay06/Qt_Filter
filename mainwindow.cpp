@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->flip_savesuccessful->setVisible(false);
 }
 
+//global variables
 Image out_image;
 string newimage_path;
 
@@ -48,6 +49,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+//Menu window
 void MainWindow::on_black_and_white_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
@@ -83,6 +86,8 @@ void MainWindow::on_old_tv_button_clicked()
 }
 
 
+
+//Black and wihte window
 void MainWindow::on_black_and_white_filename_returnPressed()
 {
     QString qfilename = ui->black_and_white_filename->text();
@@ -132,7 +137,6 @@ void MainWindow::on_black_and_white_filename_returnPressed()
     }
 }
 
-
 void MainWindow::on_black_and_white_savenew_clicked()
 {
     ui->stackedWidget->setCurrentIndex(7);
@@ -146,7 +150,6 @@ void MainWindow::on_black_and_white_savenew_clicked()
     ui->black_and_white_filename->setReadOnly(false);
     ui->black_and_white_savesuccessful->setVisible(false);
 }
-
 
 void MainWindow::on_black_and_white_savesame_clicked()
 {
@@ -168,6 +171,7 @@ void MainWindow::on_black_and_white_savesame_clicked()
 }
 
 
+//New save window
 void MainWindow::on_newsave_browse_clicked()
 {
     QString folderPath = QFileDialog::getExistingDirectory(nullptr, "Select a folder", QDir::homePath());
@@ -182,7 +186,6 @@ void MainWindow::on_newsave_browse_clicked()
     }
 }
 
-
 void MainWindow::on_newsave_newfilename_returnPressed()
 {
     try{
@@ -195,6 +198,7 @@ void MainWindow::on_newsave_newfilename_returnPressed()
         QTimer::singleShot(3000, this, [this](){
             ui->stackedWidget->setCurrentIndex(0);
             ui->newsave_newfilename->setReadOnly(true);
+            ui->newsave_savesuccessuful->setVisible(false);
             ui->newsave_newfilename->setText("");
         });
 
@@ -208,6 +212,7 @@ void MainWindow::on_newsave_newfilename_returnPressed()
 }
 
 
+//Flip window
 void MainWindow::on_flip_filename_returnPressed()
 {
     try{
@@ -233,7 +238,6 @@ void MainWindow::on_flip_filename_returnPressed()
     }
 }
 
-
 void MainWindow::on_flip_V_clicked()
 {
     Image new_image(out_image.width, out_image.height);
@@ -254,8 +258,6 @@ void MainWindow::on_flip_V_clicked()
     ui->flip_savenew->setEnabled(true);
     ui->flip_savesame->setEnabled(true);
 }
-
-
 
 void MainWindow::on_flip_H_clicked()
 {
@@ -278,7 +280,6 @@ void MainWindow::on_flip_H_clicked()
     ui->flip_savesame->setEnabled(true);
 }
 
-
 void MainWindow::on_flip_savenew_clicked()
 {
     ui->stackedWidget->setCurrentIndex(7);
@@ -292,7 +293,6 @@ void MainWindow::on_flip_savenew_clicked()
     ui->flip_filename->setText("");
     ui->flip_filename->setReadOnly(false);
 }
-
 
 void MainWindow::on_flip_savesame_clicked()
 {

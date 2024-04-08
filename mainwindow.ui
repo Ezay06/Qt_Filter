@@ -175,6 +175,19 @@
        <string>Resize Image</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="greyscale_button">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>140</y>
+        <width>171</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Greyscale filter</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="black_and_white">
      <widget class="QLabel" name="black_and_white_menu">
@@ -861,6 +874,19 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="greyscale"/>
+    <widget class="QWidget" name="merge"/>
+    <widget class="QWidget" name="brightness"/>
+    <widget class="QWidget" name="detect_edges"/>
+    <widget class="QWidget" name="infrared"/>
+    <widget class="QWidget" name="skew"/>
+    <widget class="QWidget" name="ball"/>
+    <widget class="QWidget" name="invert"/>
+    <widget class="QWidget" name="rotate"/>
+    <widget class="QWidget" name="frame"/>
+    <widget class="QWidget" name="blur"/>
+    <widget class="QWidget" name="wano"/>
+    <widget class="QWidget" name="oil_painting"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

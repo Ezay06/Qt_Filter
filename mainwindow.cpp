@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //purple initiallization
     ui->purple_savesuccessful->setVisible(false);
+
 }
 
 //global variables
@@ -192,6 +193,10 @@ void MainWindow::on_old_tv_button_clicked()
     out_image = image;
 }
 
+void MainWindow::on_greyscale_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(9);
+}
 
 
 //Black and wihte window
@@ -549,6 +554,7 @@ void MainWindow::on_old_tv_savesame_clicked()
         ui->old_tv_savesuccessful->setVisible(false);
     });
 }
+
 
 
 //purple window

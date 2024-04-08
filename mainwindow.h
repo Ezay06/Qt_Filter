@@ -68,6 +68,8 @@ private slots:
 
     void on_purple_savesame_clicked();
 
+    void on_greyscale_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

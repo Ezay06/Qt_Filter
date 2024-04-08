@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <regex>
 #include <vector>
 #include <array>
 #include <sstream>
@@ -12,6 +11,8 @@ using namespace std;
 #include <QTimer>
 #include <QFileDialog>
 #include <QDebug>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
@@ -42,6 +43,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->crop_savesame->setEnabled(false);
     ui->crop_savesame->setVisible(false);
     ui->crop_savesuccessful->setVisible(false);
+
+    //resize initiallization
+    ui->resize_savenew->setEnabled(false);
+    ui->resize_savenew->setVisible(false);
+    ui->resize_savesame->setEnabled(false);
+    ui->resize_savesame->setVisible(false);
+    ui->resize_savedsuccessful->setVisible(false);
 }
 
 //global variables
@@ -279,47 +287,73 @@ void MainWindow::on_load_browse_clicked()
 void MainWindow::on_crop_crop_clicked()
 {
     Image image(in_image);
-    long center_x_int = ui->crop_positionx->text().toLong();
-    long center_y_int = ui->crop_positiony->text().toLong();
-    long new_dimensions_w_int = ui->crop_height->text().toLong();
-    long new_dimensions_h_int = ui->crop_width->text().toLong();
+    bool values_valid;
+    int center_x;
+    int center_y;
+    int new_dimensions_w;
+    int new_dimensions_h;
+
+    QRegularExpression rx("[0-9]+");
+    QRegularExpressionValidator x_validator(rx, ui->crop_positionx);
+    QRegularExpressionValidator y_validator(rx, ui->crop_positiony);
+    QRegularExpressionValidator h_validator(rx, ui->crop_height);
+    QRegularExpressionValidator w_validator(rx, ui->crop_width);
+    ui->crop_positionx->setValidator(&x_validator);
+    ui->crop_positiony->setValidator(&y_validator);
+    ui->crop_height->setValidator(&h_validator);
+    ui->crop_width->setValidator(&x_validator);
 
     if (ui->crop_positionx->text() == ""  || ui->crop_positiony->text() == "" || ui->crop_height->text() == "" || ui->crop_width->text() == ""){
         ui->crop_errormessage->setStyleSheet("color: red");
         ui->crop_errormessage->setText("Please enter all values.");
     }
 
-    else if (new_dimensions_w_int + center_x_int > image.width || new_dimensions_h_int + center_y_int > image.height){
+    else if(!ui->crop_positionx->hasAcceptableInput() || !ui->crop_positiony->hasAcceptableInput() || !ui->crop_height->hasAcceptableInput() || !ui->crop_width->hasAcceptableInput()){
         ui->crop_errormessage->setStyleSheet("color: red");
-        ui->crop_errormessage->setText("The dimensions you entered are out of bounds relative to the corner you chose. Please try again.");
+        ui->crop_errormessage->setText("All values must be numbers.");
     }
 
     else{
-        try{
-            image(center_x_int, center_y_int, 0);
-            Image new_image(new_dimensions_w_int, new_dimensions_h_int);
-            for (int i = 0; i < image.width; i++){
-                for (int j = 0; j < image.height; j++){
-                    if ( i >= center_x_int && i < center_x_int + new_image.width && j >= center_y_int && j < center_x_int + new_image.height){
-                        for (int c = 0; c < 3; c++){
-                            new_image(i - center_x_int, j - center_y_int, c) = image(i, j, c);
+        center_x = ui->crop_positionx->text().toInt();
+        center_y = ui->crop_positiony->text().toInt();
+        new_dimensions_w = ui->crop_width->text().toInt();
+        new_dimensions_h = ui->crop_height->text().toInt();
+
+        if (new_dimensions_w + center_x > image.width || new_dimensions_h + center_y > image.height){
+            ui->crop_errormessage->setStyleSheet("color: red");
+            ui->crop_errormessage->setText("The dimensions you entered are out of bounds relative to the corner you chose. Please try again.");
+        }
+
+        else{
+            try{
+                image(center_x, center_y, 0);
+                Image new_image(new_dimensions_w, new_dimensions_h);
+                ui->crop_errormessage->setText("");
+                for (int i = 0; i < image.width; i++){
+                    for (int j = 0; j < image.height; j++){
+                        if ( i >= center_x && i < center_x + new_image.width && j >= center_y && j < center_y + new_image.height){
+                            for (int c = 0; c < 3; c++){
+                                new_image(i - center_x, j - center_y, c) = image(i, j, c);
+                            }
                         }
+
                     }
 
                 }
-
+                out_image = new_image;
+                ui->crop_savenew->setEnabled(true);
+                ui->crop_savenew->setVisible(true);
+                ui->crop_savesame->setEnabled(true);
+                ui->crop_savesame->setVisible(true);
             }
-            out_image = new_image;
-            ui->crop_savenew->setEnabled(true);
-            ui->crop_savenew->setVisible(true);
-            ui->crop_savesame->setEnabled(true);
-            ui->crop_savesame->setVisible(true);
+            catch(const out_of_range& e){
+                ui->crop_errormessage->setStyleSheet("color: red");
+                ui->crop_errormessage->setText("The position you entered is invalid. Please try again.");
+            }
         }
-        catch(const out_of_range& e){
-            ui->crop_errormessage->setStyleSheet("color: red");
-            ui->crop_errormessage->setText("The position you entered is invalid. Please try again.");
-        }
+
     }
+
 }
 
 
@@ -354,5 +388,84 @@ void MainWindow::on_crop_savenew_clicked()
     ui->crop_width->setText("");
     ui->crop_positionx->setText("");
     ui->crop_positiony->setText("");
+}
+
+
+//Resize window
+
+void MainWindow::on_resize_resize_clicked()
+{
+    Image image(in_image);
+    long new_dimensions_w;
+    long new_dimensions_h;
+    QRegularExpression rx("[0-9]+");
+    QRegularExpressionValidator w_validator(rx, ui->resize_W);
+    QRegularExpressionValidator h_validator(rx, ui->resize_H);
+    ui->resize_H->setValidator(&h_validator);
+    ui->resize_W->setValidator(&w_validator);
+
+    if (ui->resize_H->text() == "" || ui->resize_W->text() == ""){
+        ui->resize_errormessage->setStyleSheet("color: red");
+        ui->resize_errormessage->setText("Please enter all values");
+    }
+
+    else if (!ui->resize_H->hasAcceptableInput() || !ui->resize_W->hasAcceptableInput()){
+        ui->resize_errormessage->setStyleSheet("color: red");
+        ui->resize_errormessage->setText("All values must be numbers.");
+    }
+
+    else{
+        ui->resize_errormessage->setText("");
+        new_dimensions_w = ui->resize_W->text().toLong();
+        new_dimensions_h = ui->resize_H->text().toLong();
+
+        Image new_image(new_dimensions_w, new_dimensions_h);
+
+        double ratio_w = static_cast<double> (image.width) / new_image.width;
+        double ratio_h = static_cast<double> (image.height) / new_image.height;
+
+        for (int i = 0; i < new_image.width; i++){
+            int neighbor_w = round(i * ratio_w);
+            for (int j = 0; j < new_image.height; j++){
+                int neighbor_h = round(j * ratio_h);
+                for (int c = 0; c < 3; c++){
+                    new_image(i,j,c) = image(neighbor_w, neighbor_h, c);
+                }
+            }
+        }
+
+        out_image = new_image;
+        ui->resize_savenew->setEnabled(true);
+        ui->resize_savenew->setVisible(true);
+        ui->resize_savesame->setEnabled(true);
+        ui->resize_savesame->setVisible(true);
+    }
+}
+
+
+void MainWindow::on_resize_savenew_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+    ui->resize_savenew->setEnabled(false);
+    ui->resize_savenew->setVisible(false);
+    ui->resize_savesame->setEnabled(false);
+    ui->resize_savesame->setVisible(false);
+    ui->resize_H->setText("");
+    ui->resize_W->setText("");
+}
+
+
+void MainWindow::on_resize_savesame_clicked()
+{
+    out_image.saveImage(in_image_path);
+    ui->resize_savedsuccessful->setVisible(true);
+    QTimer::singleShot(3000, this, [this](){
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->resize_savenew->setEnabled(false);
+        ui->resize_savenew->setVisible(false);
+        ui->resize_savesame->setEnabled(false);
+        ui->resize_savesame->setVisible(false);
+        ui->resize_savedsuccessful->setVisible(false);
+    });
 }
 

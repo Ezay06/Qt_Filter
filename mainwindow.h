@@ -54,6 +54,12 @@ private slots:
 
     void on_crop_savenew_clicked();
 
+    void on_resize_resize_clicked();
+
+    void on_resize_savenew_clicked();
+
+    void on_resize_savesame_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

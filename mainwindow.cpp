@@ -50,6 +50,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->resize_savesame->setEnabled(false);
     ui->resize_savesame->setVisible(false);
     ui->resize_savedsuccessful->setVisible(false);
+
+    //old tv initiallization
+    ui->old_tv_savesuccessful->setVisible(false);
+
+    //purple initiallization
+    ui->purple_savesuccessful->setVisible(false);
 }
 
 //global variables
@@ -64,7 +70,8 @@ MainWindow::~MainWindow()
 }
 
 
-//Menu window
+//Filters menu window
+//black and white, old tv, and purple filters require no additional user input; so the algorithms are implemented here in the filters menu.
 void MainWindow::on_black_and_white_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
@@ -96,18 +103,15 @@ void MainWindow::on_black_and_white_button_clicked()
         out_image = image;
 }
 
-
 void MainWindow::on_flip_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
 }
 
-
 void MainWindow::on_crop_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(4);
 }
-
 
 void MainWindow::on_resize_button_clicked()
 {
@@ -117,19 +121,80 @@ void MainWindow::on_resize_button_clicked()
 void MainWindow::on_purple_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(6);
-}
 
+    Image image(in_image);
+
+    for (int i = 0; i < image.width; i++){
+        for (int j = 0; j < image.height; j++){
+            int new_r = image(i, j, 0) + 50;
+            int new_b = image(i, j, 2) + 50;
+            int new_g = image(i, j, 1) - 20;
+
+
+            if (new_r > 255){
+                new_r = 255;
+            }
+            if (new_b > 255){
+                new_b = 255;
+            }
+            if (new_g < 0){
+                new_g = 0;
+            }
+
+
+            image(i, j, 0) = new_r;
+            image(i, j, 1) = new_g;
+            image(i, j, 2) = new_b;
+        }
+    }
+
+    out_image = image;
+}
 
 void MainWindow::on_old_tv_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(7);
+
+    Image image(in_image);
+
+    for (int i = 0; i < image.width; i++){
+        for (int j = 0; j < image.height; j++){
+            for (int c = 0; c < 3; c++){
+                int pixel_value = image(i, j, c);
+                default_random_engine generator;
+                uniform_int_distribution<int> noise(10, 50);
+                pixel_value = pixel_value + noise(generator);
+                pixel_value = pixel_value - 30;
+                pixel_value = pixel_value * 0.8;
+
+                if (j % 2 == 0){
+                    pixel_value = pixel_value - 75;
+                }
+                else{
+                    pixel_value = pixel_value + 75;
+                }
+
+                if (pixel_value > 255){
+                    pixel_value = 255;
+                }
+
+                if (pixel_value < 0){
+                    pixel_value = 0;
+                }
+
+                image(i, j, c) = pixel_value;
+
+
+            }
+        }
+    }
+
+    out_image = image;
 }
 
 
 
 //Black and wihte window
-
-
 void MainWindow::on_black_and_white_savenew_clicked()
 {
     ui->stackedWidget->setCurrentIndex(8);
@@ -140,12 +205,13 @@ void MainWindow::on_black_and_white_savesame_clicked()
 {
     out_image.saveImage(in_image_path);
     ui->black_and_white_savesuccessful->setVisible(true);
-    QTimer::singleShot(3000, this, [this](){
+    QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
         ui->black_and_white_savesuccessful->setVisible(false);
         ui->stackedWidget->setCurrentIndex(0);
     });
 
 }
+
 
 
 //New save window
@@ -187,6 +253,7 @@ void MainWindow::on_newsave_newfilename_returnPressed()
         ui->newsave_newfilename->setFocus();
     }
 }
+
 
 
 //Flip window
@@ -255,7 +322,6 @@ void MainWindow::on_flip_savesame_clicked()
     });
 }
 
-
 void MainWindow::on_load_browse_clicked()
 {
     QString filePath = QFileDialog::getOpenFileName(nullptr, "Select a file", QDir::homePath(), "All Files (*)");
@@ -283,6 +349,7 @@ void MainWindow::on_load_browse_clicked()
 }
 
 
+
 //crop window
 void MainWindow::on_crop_crop_clicked()
 {
@@ -298,7 +365,7 @@ void MainWindow::on_crop_crop_clicked()
     QRegularExpressionValidator y_validator(rx, ui->crop_positiony);
     QRegularExpressionValidator h_validator(rx, ui->crop_height);
     QRegularExpressionValidator w_validator(rx, ui->crop_width);
-    ui->crop_positionx->setValidator(&x_validator);
+    ui->crop_positionx->setValidator(&x_validator);  // applies a regular expression pattern to a line edit, in this case it checks if the input is only numbers
     ui->crop_positiony->setValidator(&y_validator);
     ui->crop_height->setValidator(&h_validator);
     ui->crop_width->setValidator(&x_validator);
@@ -308,6 +375,7 @@ void MainWindow::on_crop_crop_clicked()
         ui->crop_errormessage->setText("Please enter all values.");
     }
 
+    //checks if the input matches the regular expression
     else if(!ui->crop_positionx->hasAcceptableInput() || !ui->crop_positiony->hasAcceptableInput() || !ui->crop_height->hasAcceptableInput() || !ui->crop_width->hasAcceptableInput()){
         ui->crop_errormessage->setStyleSheet("color: red");
         ui->crop_errormessage->setText("All values must be numbers.");
@@ -356,7 +424,6 @@ void MainWindow::on_crop_crop_clicked()
 
 }
 
-
 void MainWindow::on_crop_savesame_clicked()
 {
     out_image.saveImage(in_image_path);
@@ -375,7 +442,6 @@ void MainWindow::on_crop_savesame_clicked()
     });
 }
 
-
 void MainWindow::on_crop_savenew_clicked()
 {
     ui->stackedWidget->setCurrentIndex(8);
@@ -392,7 +458,6 @@ void MainWindow::on_crop_savenew_clicked()
 
 
 //Resize window
-
 void MainWindow::on_resize_resize_clicked()
 {
     Image image(in_image);
@@ -442,7 +507,6 @@ void MainWindow::on_resize_resize_clicked()
     }
 }
 
-
 void MainWindow::on_resize_savenew_clicked()
 {
     ui->stackedWidget->setCurrentIndex(8);
@@ -453,7 +517,6 @@ void MainWindow::on_resize_savenew_clicked()
     ui->resize_H->setText("");
     ui->resize_W->setText("");
 }
-
 
 void MainWindow::on_resize_savesame_clicked()
 {
@@ -466,6 +529,41 @@ void MainWindow::on_resize_savesame_clicked()
         ui->resize_savesame->setEnabled(false);
         ui->resize_savesame->setVisible(false);
         ui->resize_savedsuccessful->setVisible(false);
+    });
+}
+
+
+
+//old tv window
+void MainWindow::on_old_tv_savenew_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+}
+
+void MainWindow::on_old_tv_savesame_clicked()
+{
+    out_image.saveImage(in_image_path);
+    ui->old_tv_savesuccessful->setVisible(true);
+    QTimer::singleShot(3000, this, [this](){
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->old_tv_savesuccessful->setVisible(false);
+    });
+}
+
+
+//purple window
+void MainWindow::on_purple_savenew_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+}
+
+void MainWindow::on_purple_savesame_clicked()
+{
+    out_image.saveImage(in_image_path);
+    ui->purple_savesuccessful->setVisible(true);
+    QTimer::singleShot(3000, this, [this](){
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->purple_savesuccessful->setVisible(false);
     });
 }
 

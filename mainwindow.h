@@ -60,6 +60,14 @@ private slots:
 
     void on_resize_savesame_clicked();
 
+    void on_old_tv_savenew_clicked();
+
+    void on_old_tv_savesame_clicked();
+
+    void on_purple_savenew_clicked();
+
+    void on_purple_savesame_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

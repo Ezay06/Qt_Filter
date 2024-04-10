@@ -30,10 +30,6 @@ private slots:
 
     void on_old_tv_button_clicked();
 
-    void on_black_and_white_savenew_clicked();
-
-    void on_black_and_white_savesame_clicked();
-
     void on_newsave_browse_clicked();
 
     void on_newsave_newfilename_returnPressed();
@@ -42,35 +38,13 @@ private slots:
 
     void on_flip_H_clicked();
 
-    void on_flip_savenew_clicked();
-
-    void on_flip_savesame_clicked();
-
     void on_load_browse_clicked();
 
     void on_crop_crop_clicked();
 
-    void on_crop_savesame_clicked();
-
-    void on_crop_savenew_clicked();
-
     void on_resize_resize_clicked();
 
-    void on_resize_savenew_clicked();
-
-    void on_resize_savesame_clicked();
-
-    void on_old_tv_savenew_clicked();
-
-    void on_old_tv_savesame_clicked();
-
-    void on_purple_savenew_clicked();
-
-    void on_purple_savesame_clicked();
-
     void on_greyscale_button_clicked();
-
-    void on_black_and_white_savesuccessful_linkActivated(const QString &link);
 
     void on_btnSaveNewImage_clicked();
 
@@ -84,10 +58,6 @@ private slots:
 
     void on_light_button_clicked();
 
-    void on_newsave_newfilename_cursorPositionChanged(int arg1, int arg2);
-
-    void on_newsave_savesuccessuful_linkActivated(const QString &link);
-
     void on_detectEdge_button_clicked();
 
     void on_btnDetectEdgeSaveSimage_clicked();
@@ -98,9 +68,29 @@ private slots:
 
     void on_btnInfraRedSaveNimage_clicked();
 
-    void on_btnDLSaveNimage_3_clicked();
-
     void on_btnInfraRedSaveSimage_clicked();
+
+    void on_save_clicked();
+
+    void on_crop_positionx_cursorPositionChanged(int arg1, int arg2);
+
+    void on_crop_positiony_cursorPositionChanged(int arg1, int arg2);
+
+    void on_crop_width_cursorPositionChanged(int arg1, int arg2);
+
+    void on_crop_height_cursorPositionChanged(int arg1, int arg2);
+
+    void on_resize_W_cursorPositionChanged(int arg1, int arg2);
+
+    void on_resize_H_cursorPositionChanged(int arg1, int arg2);
+
+    void on_newsave_savesame_clicked();
+
+    void on_load_new_clicked();
+
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     Ui::MainWindow *ui;

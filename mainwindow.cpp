@@ -54,7 +54,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
+//Close event
 void MainWindow::closeEvent(QCloseEvent *event) {
     // Create a QMessageBox
     if (ui->stackedWidget->currentIndex() != 0){
@@ -114,7 +114,7 @@ void MainWindow::on_save_clicked()
 
 void MainWindow::on_black_and_white_button_clicked()
 {
-    Image image(in_image);
+    Image image(out_image);
     for (int i = 0; i < image.width; i++){
         for (int j = 0; j < image.height; j++){
             unsigned int avg = 0;
@@ -798,6 +798,8 @@ void MainWindow::on_crop_crop_clicked()
     ui->crop_positiony->setText("");
 }
 
+
+
 //Resize window
 void MainWindow::on_resize_W_cursorPositionChanged(int arg1, int arg2)
 {
@@ -905,6 +907,8 @@ void MainWindow::on_resize_resize_clicked()
 
 
 
+
+
 void MainWindow::on_btnSaveNewImage_clicked()
 {
     ui->stackedWidget->setCurrentIndex(8);
@@ -971,4 +975,5 @@ void MainWindow::on_btnInfraRedSaveSimage_clicked()
     });
 
 }
+
 

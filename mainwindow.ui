@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-10</y>
+      <y>-50</y>
       <width>951</width>
       <height>581</height>
      </rect>
@@ -186,6 +186,71 @@
       </property>
       <property name="text">
        <string>Greyscale filter</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="merge_button">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>190</y>
+        <width>171</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Merge filter</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="dark_button">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>240</y>
+        <width>171</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Darker 50%</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="light_button">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>290</y>
+        <width>171</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Lighter 50%</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="detectEdge_button">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>340</y>
+        <width>171</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Detect Image Edges</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="infrared_button">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>390</y>
+        <width>171</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Infrared</string>
       </property>
      </widget>
     </widget>
@@ -874,11 +939,211 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="greyscale"/>
-    <widget class="QWidget" name="merge"/>
-    <widget class="QWidget" name="brightness"/>
-    <widget class="QWidget" name="detect_edges"/>
-    <widget class="QWidget" name="infrared"/>
+    <widget class="QWidget" name="greyscale">
+     <widget class="QLabel" name="L_GrayScaleMenu">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>40</y>
+        <width>261</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>GrayScale Filter</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnSaveNewImage">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>190</y>
+        <width>181</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as new image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnSaveSamemage">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>190</y>
+        <width>141</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as same image</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="merge">
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>80</y>
+        <width>101</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Merge two images</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnMergeSaveNImage">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>210</y>
+        <width>181</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as new image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnMergeSaveSimage">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>210</y>
+        <width>141</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as same image</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="brightness">
+     <widget class="QLabel" name="l_lightDark">
+      <property name="geometry">
+       <rect>
+        <x>401</x>
+        <y>90</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Darken and Lighten Image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnDLSaveNimage">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>200</y>
+        <width>161</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as new image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnDLSaveSimage">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>200</y>
+        <width>161</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as same image</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="detect_edges">
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>80</y>
+        <width>191</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Detect Image Edges</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnDetectEdgeSaveNimage">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>180</y>
+        <width>161</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as new image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnDetectEdgeSaveSimage">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>180</y>
+        <width>161</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as same image</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="infrared">
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>90</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Infra_Red Image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnInfraRedSaveNimage">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>170</y>
+        <width>161</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as new image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnInfraRedSaveSimage">
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>170</y>
+        <width>161</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save as same image</string>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="skew"/>
     <widget class="QWidget" name="ball"/>
     <widget class="QWidget" name="invert"/>
@@ -895,7 +1160,7 @@
      <x>0</x>
      <y>0</y>
      <width>950</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

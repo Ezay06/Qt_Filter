@@ -57,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
     //purple initiallization
     ui->purple_savesuccessful->setVisible(false);
 
+    //
+
 }
 
 //global variables
@@ -118,6 +120,11 @@ void MainWindow::on_resize_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(5);
 }
+////////////////////////////////////////////////////////////////////////////Me
+/*void MainWindow::on_greyscale_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(9);
+}*/
 
 void MainWindow::on_purple_button_clicked()
 {
@@ -196,7 +203,45 @@ void MainWindow::on_old_tv_button_clicked()
 void MainWindow::on_greyscale_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(9);
+
+    Image image(in_image);
+
+    for(int i=0;i<image.width;++i){
+
+        for(int j=0;j<image.height;++j){
+
+            //calculate the pixels average
+
+            int x = (image(i,j,0)+image(i,j,1)+image(i,j,2))/3;
+
+            image(i,j,0)=x;
+            image(i,j,1)=x;
+            image(i,j,2)=x;
+
+        }
+    }
+   // system(image.imageData);
+    out_image = image;
+
 }
+// GrayScale window
+/*
+void MainWindow::on_greyscale_savenew_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+    ui->greyscale_savesuccessful->setVisible(false);
+}
+
+void MainWindow::on_greyscale_savesame_clicked()
+{
+    out_image.saveImage(in_image_path);
+    ui->greyscale_savesuccessful->setVisible(true);
+    QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
+        ui->greyscale_savesuccessful->setVisible(false);
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+
+}*/
 
 
 //Black and wihte window
@@ -571,5 +616,200 @@ void MainWindow::on_purple_savesame_clicked()
         ui->stackedWidget->setCurrentIndex(0);
         ui->purple_savesuccessful->setVisible(false);
     });
+}
+
+
+void MainWindow::on_black_and_white_savesuccessful_linkActivated(const QString &link)
+{
+    ///////
+}
+
+
+void MainWindow::on_btnSaveNewImage_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+    //ui->black_and_white_savesuccessful->setVisible(true);
+}
+
+//I here did about filter GrayScale Save Same image and the show the image
+void MainWindow::on_btnSaveSamemage_clicked()
+{
+    out_image.saveImage(in_image_path);
+    system(in_image_path.c_str());
+    ui->black_and_white_savesuccessful->setVisible(true);
+    QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
+        ui->black_and_white_savesuccessful->setVisible(false);
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+}
+
+
+void MainWindow::on_dark_button_clicked()
+{
+    Image image(in_image);
+
+    ui->stackedWidget->setCurrentIndex(11);
+    for(int i=0;i<image.width;++i){
+
+        for(int j=0;j<image.height;++j){
+
+            image(i,j,0)=image(i,j,0)*0.5;
+            image(i,j,1)=image(i,j,1)*0.5;
+            image(i,j,2)=image(i,j,2)*0.5;
+
+        }
+    }
+
+    out_image = image;
+}
+
+// Save as new image it filter dark and light
+void MainWindow::on_btnDLSaveNimage_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+    ui->black_and_white_savesuccessful->setVisible(false);
+}
+
+
+void MainWindow::on_btnDLSaveSimage_clicked()
+{
+    out_image.saveImage(in_image_path);
+    system(in_image_path.c_str());
+    ui->black_and_white_savesuccessful->setVisible(true);
+    QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
+        ui->black_and_white_savesuccessful->setVisible(false);
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+}
+
+
+void MainWindow::on_light_button_clicked()
+{
+    Image image(in_image);
+    ui->stackedWidget->setCurrentIndex(11);
+
+    for(int i=0;i<image.width;++i){
+        for(int j=0;j<image.height;++j){
+            image(i,j,0)=(image(i,j,0)*1.5>255)?255:image(i,j,0)*1.5;
+            image(i,j,1)=(image(i,j,1)*1.5>255)?255:image(i,j,1)*1.5;
+            image(i,j,2)=(image(i,j,2)*1.5>255)?255:image(i,j,2)*1.5;
+        }
+    }
+
+    out_image = image;
+
+}
+
+
+void MainWindow::on_newsave_newfilename_cursorPositionChanged(int arg1, int arg2)
+{
+    ///////
+}
+
+
+void MainWindow::on_newsave_savesuccessuful_linkActivated(const QString &link)
+{
+    //////
+}
+
+
+void MainWindow::on_detectEdge_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(12);
+    Image image(in_image.width,in_image.height);
+
+    uint32_t x=0;
+    for(int i=0;i<in_image.width;++i){
+        for(int j=0;j<in_image.height;++j){
+            x += in_image(i,j,0) + in_image(i,j,1) + in_image(i,j,2);
+        }
+    }
+
+    x /= 3 * in_image.width * in_image.height;
+
+    for(int i=0;i<in_image.width;++i){
+        for(int j=0;j<in_image.height;++j){
+
+            in_image(i,j,0)=(in_image(i,j,0)>x)?255:0;
+            in_image(i,j,1)=(in_image(i,j,1)>x)?255:0;
+            in_image(i,j,2)=(in_image(i,j,2)>x)?255:0;
+        }
+    }
+
+
+    for(int i=1;i<in_image.width;i+=1){
+        for(int j=1;j<in_image.height;j+=1){
+
+            int x=( in_image(i,j,0)!=in_image(i-1,j-1,0) || in_image(i,j,0)!=in_image(i-1,j,0) ||
+                     in_image(i,j,0)!=in_image(i,j-1,0)) ? 0 : 255;
+
+            image(i,j,0)=x;
+            image(i,j,1)=x;
+            image(i,j,2)=x;
+        }
+    }
+
+    out_image = image;
+}
+
+
+void MainWindow::on_btnDetectEdgeSaveSimage_clicked()
+{
+    out_image.saveImage(in_image_path);
+    system(in_image_path.c_str());
+    ui->black_and_white_savesuccessful->setVisible(true);
+    QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
+        ui->black_and_white_savesuccessful->setVisible(false);
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+
+}
+
+
+void MainWindow::on_btnDetectEdgeSaveNimage_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+    ui->black_and_white_savesuccessful->setVisible(false);
+}
+
+
+void MainWindow::on_infrared_button_clicked()
+{
+    Image image(in_image);
+    ui->stackedWidget->setCurrentIndex(13);
+
+    for(int i=0;i<image.width;i++){
+        for(int j=0;j<image.height;j++){
+
+            image(i, j, 1) = 255 - image(i, j, 0);
+            image(i, j, 2) = 255 - image(i, j, 0);
+            image(i, j, 0) = 255;
+
+        }
+    }
+    out_image = image;
+}
+
+
+void MainWindow::on_btnInfraRedSaveNimage_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+    ui->black_and_white_savesuccessful->setVisible(false);
+}
+
+
+
+
+
+void MainWindow::on_btnInfraRedSaveSimage_clicked()
+{
+    out_image.saveImage(in_image_path);
+    system(in_image_path.c_str());
+    ui->black_and_white_savesuccessful->setVisible(true);
+    QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
+        ui->black_and_white_savesuccessful->setVisible(false);
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+
 }
 

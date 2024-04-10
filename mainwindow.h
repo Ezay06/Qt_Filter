@@ -70,6 +70,38 @@ private slots:
 
     void on_greyscale_button_clicked();
 
+    void on_black_and_white_savesuccessful_linkActivated(const QString &link);
+
+    void on_btnSaveNewImage_clicked();
+
+    void on_btnSaveSamemage_clicked();
+
+    void on_dark_button_clicked();
+
+    void on_btnDLSaveNimage_clicked();
+
+    void on_btnDLSaveSimage_clicked();
+
+    void on_light_button_clicked();
+
+    void on_newsave_newfilename_cursorPositionChanged(int arg1, int arg2);
+
+    void on_newsave_savesuccessuful_linkActivated(const QString &link);
+
+    void on_detectEdge_button_clicked();
+
+    void on_btnDetectEdgeSaveSimage_clicked();
+
+    void on_btnDetectEdgeSaveNimage_clicked();
+
+    void on_infrared_button_clicked();
+
+    void on_btnInfraRedSaveNimage_clicked();
+
+    void on_btnDLSaveNimage_3_clicked();
+
+    void on_btnInfraRedSaveSimage_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

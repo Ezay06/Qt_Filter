@@ -511,8 +511,102 @@ void MainWindow::on_rotate_button_clicked()
     ui->stackedWidget->setCurrentIndex(16);
 }
 
+void MainWindow::on_blur_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(19);
+}
+
+void MainWindow::on_wano_button_clicked()
+{
+    Image image(out_image);
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+
+            if(image(i,j,1)<206){
+                image(i, j, 1) = image(i,j,1)+20;
+            }
+            else{
+                image(i, j, 1) = 225;
+            }
 
 
+        }
+    }
+    out_image = image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+}
+
+void MainWindow::on_oil_painting_button_clicked()
+{
+    Image image(out_image);
+    Image image2(out_image);
+
+
+    vector<int> intensity(20, 0);
+    vector<int> avR(20, 0);
+    vector<int> avG(20, 0);
+    vector<int> avB(20, 0);
+
+    for (int i = 2; i < image.width - 2; i++) {
+        for (int j = 2; j < image.height - 2; j++) {
+            int curMax = 0;
+            int MaxIndex = 0;
+
+            for (int o = -2; o <= 2; o++) {
+                for (int p = -2; p <= 2; p++) {
+                    int r = image(i + o, j + p, 0);
+                    int g = image(i + o, j + p, 1);
+                    int b = image(i + o, j + p, 2);
+
+
+                    int curintensity = ((r + g + b) / 3) * 20 / 255;
+
+
+                    intensity[curintensity]++;
+
+
+                    avR[curintensity] += r;
+                    avG[curintensity] += g;
+                    avB[curintensity] += b;
+
+
+                }
+            }
+
+
+            for (int k = 0; k < 20; k++) {
+                if (intensity[k] > curMax) {
+                    curMax = intensity[k];
+                    MaxIndex = k;
+                }
+            }
+
+
+            int FR = avR[MaxIndex] / curMax;
+            int FG = avG[MaxIndex] / curMax;
+            int FB = avB[MaxIndex] / curMax;
+
+            image2(i, j, 0) = FR;
+            image2(i, j, 1) = FG;
+            image2(i, j, 2) = FB;
+
+
+            intensity.assign(20, 0);
+            avR.assign(20, 0);
+            avG.assign(20, 0);
+            avB.assign(20, 0);
+        }
+    }
+    out_image = image2;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+}
 
 //New save window
 void MainWindow::on_newsave_browse_clicked()
@@ -1152,6 +1246,102 @@ void MainWindow::on_degree270_button_clicked()
     ui->current_image->setPixmap(pixmap);
     ui->stackedWidget->setCurrentIndex(1);
 }
+
+
+//Blur window
+void MainWindow::on_light_blur_button_clicked()
+{
+    Image image(out_image);
+    Image image2(out_image);
+    int r=7 , sum=0;
+    for (int i = r; i < image2.width-r; i++) {
+        for (int j = r; j < image2.height-r; j++) {
+            for (int k = 0; k < 3; k++){
+                for (int o = -r; o < r; o++){
+                    for (int p = -r; p < r; p++){
+                        sum += image(i+o,j+p,k);
+                    }
+                }
+                image2(i,j,k)=(sum/pow(2*r,2));
+                sum=0;
+
+            }
+
+        }
+    }
+    out_image = image2;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+void MainWindow::on_medium_blur_button_clicked()
+{
+    Image image(out_image);
+    Image image2(out_image);
+    int r=10 , sum=0;
+    for (int i = r; i < image2.width-r; i++) {
+        for (int j = r; j < image2.height-r; j++) {
+            for (int k = 0; k < 3; k++){
+                for (int o = -r; o < r; o++){
+                    for (int p = -r; p < r; p++){
+                        sum += image(i+o,j+p,k);
+                    }
+                }
+                image2(i,j,k)=(sum/pow(2*r,2));
+                sum=0;
+
+            }
+
+        }
+    }
+    out_image = image2;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+void MainWindow::on_strong_blur_button_clicked()
+{
+    Image image(out_image);
+    Image image2(out_image);
+    int r=13 , sum=0;
+    for (int i = r; i < image2.width-r; i++) {
+        for (int j = r; j < image2.height-r; j++) {
+            for (int k = 0; k < 3; k++){
+                for (int o = -r; o < r; o++){
+                    for (int p = -r; p < r; p++){
+                        sum += image(i+o,j+p,k);
+                    }
+                }
+                image2(i,j,k)=(sum/pow(2*r,2));
+                sum=0;
+
+            }
+
+        }
+    }
+    out_image = image2;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

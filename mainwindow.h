@@ -92,6 +92,18 @@ private slots:
 
     void on_degree270_button_clicked();
 
+    void on_light_blur_button_clicked();
+
+    void on_medium_blur_button_clicked();
+
+    void on_strong_blur_button_clicked();
+
+    void on_blur_button_clicked();
+
+    void on_wano_button_clicked();
+
+    void on_oil_painting_button_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

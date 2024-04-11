@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-RelWithDebInfo-28afb9c0fb0f02f6e711.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Qt_Filter",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Qt_Filter::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Qt_Filter-RelWithDebInfo-5dc1198276a41a3b4f8d.json",
+					"name" : "Qt_Filter",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Qt_Filter_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Qt_Filter_autogen-RelWithDebInfo-f6361e4a58297d1f1086.json",
+					"name" : "Qt_Filter_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Qt_Filter_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Qt_Filter_autogen_timestamp_deps-RelWithDebInfo-c5e7f97abacb5f312188.json",
+					"name" : "Qt_Filter_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/abdog/Documents/GitHub/Qt_Filter/build/Desktop_Qt_6_7_0_MinGW_64_bit-RelWithDebInfo",
+		"source" : "C:/Users/abdog/Documents/GitHub/Qt_Filter"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

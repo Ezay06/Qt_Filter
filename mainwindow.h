@@ -82,6 +82,16 @@ private slots:
 
     void on_apply_LD_Button_clicked();
 
+    void on_invert_button_clicked();
+
+    void on_rotate_button_clicked();
+
+    void on_degree90_button_clicked();
+
+    void on_degree180_button_clicked();
+
+    void on_degree270_button_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

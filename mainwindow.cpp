@@ -488,6 +488,29 @@ void MainWindow::on_merge_button_clicked()
 
 }
 
+void MainWindow::on_invert_button_clicked()
+{
+    Image image(out_image);
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            image(i, j, 0) = 225-image(i, j, 0);
+            image(i, j, 1) = 225-image(i, j, 1);
+            image(i, j, 2) = 225-image(i, j, 2);
+        }
+    }
+    out_image = image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+}
+
+void MainWindow::on_rotate_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(16);
+}
+
 
 
 
@@ -1064,6 +1087,84 @@ void MainWindow::on_apply_LD_Button_clicked()
     curr_image = out_image;
     ui->stackedWidget->setCurrentIndex(1);
 }
+
+
+//Rotate window
+void MainWindow::on_degree90_button_clicked()
+{
+    Image image(out_image);
+    Image image2(image.height,image.width);
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+
+            image2(image.height-j-1 ,i ,0) = image(i,j,0);
+            image2(image.height-j-1 ,i ,1) = image(i,j,1);
+            image2(image.height-j-1 ,i ,2) = image(i,j,2);
+
+        }
+    }
+    out_image = image2;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+void MainWindow::on_degree180_button_clicked()
+{
+    Image image(out_image);
+    Image image2(image.width,image.height);
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            image2(image.width-i-1 ,image.height-j-1 ,0) = image(i,j,0);
+            image2(image.width-i-1 ,image.height-j-1 ,1) = image(i,j,1);
+            image2(image.width-i-1 ,image.height-j-1 ,2) = image(i,j,2);
+        }
+    }
+    out_image = image2;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+void MainWindow::on_degree270_button_clicked()
+{
+    Image image(out_image);
+    Image image2(image.height,image.width);
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+
+
+
+            image2(j ,image.width-i-1 ,0) = image(i,j,0);
+            image2(j ,image.width-i-1 ,1) = image(i,j,1);
+            image2(j ,image.width-i-1 ,2) = image(i,j,2);
+
+        }
+    }
+    out_image = image2;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

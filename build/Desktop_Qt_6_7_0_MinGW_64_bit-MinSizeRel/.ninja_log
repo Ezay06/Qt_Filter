@@ -1,0 +1,15 @@
+# ninja log v5
+10	145	7345768013232164	Qt_Filter_autogen/timestamp	b7159e94dd60bc6
+4197	4327	7345768055014174	Qt_Filter.exe	d3064be1d44b5809
+468	1872	7345767174332560	CMakeFiles/Qt_Filter.dir/Qt_Filter_autogen/mocs_compilation.cpp.obj	d2063c6137e1234b
+10	145	7345768013232164	Qt_Filter_autogen/mocs_compilation.cpp	b7159e94dd60bc6
+10	145	7345768013232164	C:/Users/abdog/Documents/GitHub/Qt_Filter/build/Desktop_Qt_6_7_0_MinGW_64_bit-MinSizeRel/Qt_Filter_autogen/timestamp	b7159e94dd60bc6
+156	4197	7345768053748235	CMakeFiles/Qt_Filter.dir/mainwindow.cpp.obj	6aa43a8abd960093
+10	145	7345768013232164	C:/Users/abdog/Documents/GitHub/Qt_Filter/build/Desktop_Qt_6_7_0_MinGW_64_bit-MinSizeRel/Qt_Filter_autogen/mocs_compilation.cpp	b7159e94dd60bc6
+474	1868	7345767174291991	CMakeFiles/Qt_Filter.dir/main.cpp.obj	8a156f1f9ea05abf
+12	145	7345768195114735	Qt_Filter_autogen/timestamp	b7159e94dd60bc6
+12	145	7345768195114735	Qt_Filter_autogen/mocs_compilation.cpp	b7159e94dd60bc6
+12	145	7345768195114735	C:/Users/abdog/Documents/GitHub/Qt_Filter/build/Desktop_Qt_6_7_0_MinGW_64_bit-MinSizeRel/Qt_Filter_autogen/timestamp	b7159e94dd60bc6
+12	145	7345768195114735	C:/Users/abdog/Documents/GitHub/Qt_Filter/build/Desktop_Qt_6_7_0_MinGW_64_bit-MinSizeRel/Qt_Filter_autogen/mocs_compilation.cpp	b7159e94dd60bc6
+155	4188	7345768235547407	CMakeFiles/Qt_Filter.dir/mainwindow.cpp.obj	6aa43a8abd960093
+4188	4318	7345768236814334	Qt_Filter.exe	d3064be1d44b5809

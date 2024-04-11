@@ -104,6 +104,8 @@ void MainWindow::on_load_new_clicked()
         // User clicked "No"
         in_image.saveImage(in_image_path);
         ui->stackedWidget->setCurrentIndex(0);
+        ui->original_image->clear();
+        ui->current_image->clear();
     }
 }
 
@@ -163,7 +165,7 @@ void MainWindow::on_resize_button_clicked()
 
 void MainWindow::on_purple_button_clicked()
 {
-    Image image(in_image);
+    Image image(out_image);
 
     for (int i = 0; i < image.width; i++){
         for (int j = 0; j < image.height; j++){
@@ -199,7 +201,7 @@ void MainWindow::on_purple_button_clicked()
 
 void MainWindow::on_old_tv_button_clicked()
 {
-    Image image(in_image);
+    Image image(out_image);
 
     for (int i = 0; i < image.width; i++){
         for (int j = 0; j < image.height; j++){
@@ -242,9 +244,8 @@ void MainWindow::on_old_tv_button_clicked()
 
 void MainWindow::on_greyscale_button_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(9);
 
-    Image image(in_image);
+    Image image(out_image);
 
     for(int i=0;i<image.width;++i){
 
@@ -261,6 +262,10 @@ void MainWindow::on_greyscale_button_clicked()
         }
     }
     out_image = image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
 
 }
 
@@ -285,8 +290,7 @@ void MainWindow::on_dark_button_clicked()
 
 void MainWindow::on_infrared_button_clicked()
 {
-    Image image(in_image);
-    ui->stackedWidget->setCurrentIndex(13);
+    Image image(out_image);
 
     for(int i=0;i<image.width;i++){
         for(int j=0;j<image.height;j++){
@@ -298,6 +302,10 @@ void MainWindow::on_infrared_button_clicked()
         }
     }
     out_image = image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
 }
 
 void MainWindow::on_detectEdge_button_clicked()
@@ -943,37 +951,5 @@ void MainWindow::on_btnDLSaveSimage_clicked()
     });
 }
 
-
-void MainWindow::on_btnDetectEdgeSaveSimage_clicked()
-{
-    out_image.saveImage(in_image_path);
-    system(in_image_path.c_str());
-    QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
-        ui->stackedWidget->setCurrentIndex(0);
-    });
-
-}
-
-void MainWindow::on_btnDetectEdgeSaveNimage_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(8);
-}
-
-
-
-void MainWindow::on_btnInfraRedSaveNimage_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(8);
-}
-
-void MainWindow::on_btnInfraRedSaveSimage_clicked()
-{
-    out_image.saveImage(in_image_path);
-    system(in_image_path.c_str());
-    QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
-        ui->stackedWidget->setCurrentIndex(0);
-    });
-
-}
 
 

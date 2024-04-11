@@ -58,18 +58,6 @@ private slots:
 
     void on_light_button_clicked();
 
-    void on_detectEdge_button_clicked();
-
-    void on_btnDetectEdgeSaveSimage_clicked();
-
-    void on_btnDetectEdgeSaveNimage_clicked();
-
-    void on_infrared_button_clicked();
-
-    void on_btnInfraRedSaveNimage_clicked();
-
-    void on_btnInfraRedSaveSimage_clicked();
-
     void on_save_clicked();
 
     void on_crop_positionx_cursorPositionChanged(int arg1, int arg2);
@@ -87,6 +75,10 @@ private slots:
     void on_newsave_savesame_clicked();
 
     void on_load_new_clicked();
+
+    void on_infrared_button_clicked();
+
+    void on_detectEdge_button_clicked();
 
 
 protected:

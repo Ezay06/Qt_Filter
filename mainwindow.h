@@ -46,16 +46,6 @@ private slots:
 
     void on_greyscale_button_clicked();
 
-    //void on_btnSaveNewImage_clicked();
-
-    //void on_btnSaveSamemage_clicked();
-
-    //void on_dark_button_clicked();
-
-    //void on_btnDLSaveNimage_clicked();
-
-    //void on_btnDLSaveSimage_clicked();
-
     void on_light_dark_button_clicked();
 
     void on_save_clicked();
@@ -80,31 +70,15 @@ private slots:
 
     void on_detectEdge_button_clicked();
 
-
     void on_ball_button_clicked();
 
-
-
     void on_horiSlider_L_D_valueChanged(int value);
-
-    ///void on_dark_button_clicked();
-
-    //void on_light_dark_button_clicked();
-    //void on__light_dark_button_clicked();
-
-    //void on_merge_button_2_clicked();
 
     void on_skewing_button_clicked();
 
     void on_dropwater_button_clicked();
 
     void on_merge_button_clicked();
-
-    //void on_horiSlider_L_D_actionTriggered(int action);
-
-    void on_lab_HoriSlider_L_D_linkActivated(const QString &link);
-
-    //void on_pushButton_clicked();
 
     void on_apply_LD_Button_clicked();
 

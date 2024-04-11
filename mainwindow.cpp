@@ -310,7 +310,6 @@ void MainWindow::on_infrared_button_clicked()
 
 void MainWindow::on_detectEdge_button_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(12);
     Image image(in_image.width,in_image.height);
 
     uint32_t x=0;

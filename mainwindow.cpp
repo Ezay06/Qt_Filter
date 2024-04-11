@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->original_image->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     ui->current_image->setScaledContents(true);
     ui->current_image->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
+    //ui->horiSlider_L_D->setVisible(false);
 
     //save menu initiallization
     ui->newsave_savesuccessuful->setVisible(false);
@@ -48,11 +48,18 @@ Image in_image;
 string in_image_path;
 QString qin_image_path;
 string newimage_path;
+// I added in_image2 for merge filter. me Ahmad
+Image in_image2;
+//int coefLD=50;
+int anyfilter=0;
+//lightness is 1
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+int square(int x){return x * x ;}
 
 //Close event
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -269,9 +276,9 @@ void MainWindow::on_greyscale_button_clicked()
 
 }
 
-void MainWindow::on_dark_button_clicked()
+/*void MainWindow::on_dark_button_clicked()
 {
-    Image image(in_image);
+    Image image(out_image);
 
     ui->stackedWidget->setCurrentIndex(11);
     for(int i=0;i<image.width;++i){
@@ -286,7 +293,7 @@ void MainWindow::on_dark_button_clicked()
     }
 
     out_image = image;
-}
+}*/
 
 void MainWindow::on_infrared_button_clicked()
 {
@@ -310,7 +317,7 @@ void MainWindow::on_infrared_button_clicked()
 
 void MainWindow::on_detectEdge_button_clicked()
 {
-    Image image(in_image.width,in_image.height);
+    Image image(out_image.width,out_image.height);
 
     uint32_t x=0;
     for(int i=0;i<in_image.width;++i){
@@ -343,25 +350,147 @@ void MainWindow::on_detectEdge_button_clicked()
         }
     }
 
+
     out_image = image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+
+
 }
 
-void MainWindow::on_light_button_clicked()
+//This slider special to light,dark
+void MainWindow::on_horiSlider_L_D_valueChanged(int value)
 {
-    Image image(in_image);
+    if(anyfilter!=1)in_image2=out_image;
+    ui->lab_HoriSlider_L_D->setText(QString::number(value)+'%');
+    Image image(in_image2.width,in_image2.height);
+    for(int i=0;i<in_image2.width;++i){
+        for(int j=0;j<in_image2.height;++j){
+            image(i,j,0)=(in_image2(i,j,0) * value/50.0 >255)?255:in_image2(i,j,0) * value/50.0;
+            image(i,j,1)=(in_image2(i,j,1) * value/50.0 >255)?255:in_image2(i,j,1) * value/50.0;
+            image(i,j,2)=(in_image2(i,j,2) * value/50.0 >255)?255:in_image2(i,j,2) * value/50.0;
+        }
+    }
+    out_image = image;
+    anyfilter=1;
+
+
+}
+void MainWindow::on_apply_LD_Button_clicked()
+{
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_light_dark_button_clicked()
+{
+    //ui->horiSlider_L_D->setVisible(true);
+    //Image image(out_image);
     ui->stackedWidget->setCurrentIndex(11);
+
+    /*for(int i=0;i<image.width;++i){
+        for(int j=0;j<image.height;++j){
+            image(i,j,0)=(image(i,j,0) * coefLD/50.0 >255)?255:image(i,j,0) * coefLD/50.0;
+            image(i,j,1)=(image(i,j,1) * coefLD/50.0 >255)?255:image(i,j,1) * coefLD/50.0;
+            image(i,j,2)=(image(i,j,2) * coefLD/50.0 >255)?255:image(i,j,2) * coefLD/50.0;
+        }
+    }
+
+    out_image = image;*/
+
+}
+
+
+void MainWindow::on_ball_button_clicked()
+{
+    //here take the smaller dimention till the image is square
+    Image image((out_image.width > out_image.height)?out_image.height:out_image.width,
+                (out_image.width > out_image.height)?out_image.height:out_image.width);
+
+    // assign the half radius
+    int r = 0.5 * image.width;
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            double ball = (sqrt((r * r  - (i - r)*(i - r)  - (j - r)*(j - r) )) / r);
+            image(i, j, 0) = out_image(i, j, 0) * ball;
+            image(i, j, 1) = out_image(i, j, 1) * ball;
+            image(i, j, 2) = out_image(i, j, 2) * ball;
+
+        }
+    }
+    out_image = image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+
+}
+
+void MainWindow::on_skewing_button_clicked()
+{
+    int angle=50;
+    float ang=((89.999 - angle)/180)*3.1416;
+    float slop=tan(ang);
+    Image image2(out_image.width + out_image.height * cos(ang),out_image.height * sin(ang));
+    float n = (float)out_image.height / image2.height;
+    for(int i=0;i<image2.width;++i){
+        for(int j=0;j<image2.height;++j){
+            if((j<slop*i) && j>(slop*i-slop*out_image.width)){
+                image2(i,j,0)=out_image(out_image.width-(i-j/slop),j*n,0);
+                image2(i,j,1)=out_image(out_image.width-(i-j/slop),j*n,1);
+                image2(i,j,2)=out_image(out_image.width-(i-j/slop),j*n,2);
+            }
+
+        }
+    }
+    Image image3(image2.width,image2.height);
+    for(int i=1;i<image3.width;++i){
+        for(int j=1;j<image3.height;++j){
+            image3(i,j,0)=image2(image2.width-i,j,0);
+            image3(i,j,1)=image2(image2.width-i,j,1);
+            image3(i,j,2)=image2(image2.width-i,j,2);
+        }
+    }
+
+    out_image = image3;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+
+}
+
+void MainWindow::on_dropwater_button_clicked()
+{
+    Image image(out_image);
 
     for(int i=0;i<image.width;++i){
         for(int j=0;j<image.height;++j){
-            image(i,j,0)=(image(i,j,0)*1.5>255)?255:image(i,j,0)*1.5;
-            image(i,j,1)=(image(i,j,1)*1.5>255)?255:image(i,j,1)*1.5;
-            image(i,j,2)=(image(i,j,2)*1.5>255)?255:image(i,j,2)*1.5;
+            float c = 0.1 * (sqrt(square(i-image.width/2)+ square(j-image.height/2)));
+            float z = .8 *( sin(c)/c + 0.24);
+            image(i,j,0)*=z;
+            image(i,j,1)*=z;
+            image(i,j,2)*=z;
         }
     }
 
     out_image = image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
 
 }
+
+
+
 
 
 
@@ -502,6 +631,7 @@ void MainWindow::on_load_browse_clicked()
         }
 
     }
+
 }
 
 
@@ -916,26 +1046,26 @@ void MainWindow::on_resize_resize_clicked()
 
 
 
-void MainWindow::on_btnSaveNewImage_clicked()
+/*void MainWindow::on_btnSaveNewImage_clicked()
 {
     ui->stackedWidget->setCurrentIndex(8);
     //ui->black_and_white_savesuccessful->setVisible(true);
-}
+}*/
 
 //I here did about filter GrayScale Save Same image and the show the image
-void MainWindow::on_btnSaveSamemage_clicked()
+/*void MainWindow::on_btnSaveSamemage_clicked()
 {
     out_image.saveImage(in_image_path);
     system(in_image_path.c_str());
     QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
         ui->stackedWidget->setCurrentIndex(0);
     });
-}
+}*/
 
 
 
 // Save as new image it filter dark and light
-void MainWindow::on_btnDLSaveNimage_clicked()
+/*void MainWindow::on_btnDLSaveNimage_clicked()
 {
     ui->stackedWidget->setCurrentIndex(8);
 }
@@ -948,7 +1078,105 @@ void MainWindow::on_btnDLSaveSimage_clicked()
     QTimer::singleShot(3000, this, [this](){  //Timer for 3 seconds, all commands inside the block are executed after 3 seconds.
         ui->stackedWidget->setCurrentIndex(0);
     });
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void MainWindow::on_merge_button_clicked()
+{
+    QString filePath = QFileDialog::getOpenFileName(nullptr, "Select a file", QDir::homePath(), "All Files (*)");
+    if (filePath == ""){
+        ui->load_errormessage->setStyleSheet("color: red");
+        ui->load_errormessage->setText("No file selected.");
+    }
+    else{
+
+        try{
+            Image in_image2(filePath.toStdString());
+            //in_image = image;
+            //out_image = in_image;
+            //curr_image = out_image;
+            //in_image_path = filePath.toStdString();
+            //qin_image_path = filePath;
+            ui->load_errormessage->setText("");
+            ui->stackedWidget->setCurrentIndex(1);
+            QPixmap pixmap(qin_image_path);
+            ui->original_image->setPixmap(pixmap);
+            ui->current_image->setPixmap(pixmap);
+        }
+
+        catch(const invalid_argument& e){
+            QString qerror_message = QString::fromStdString(e.what());
+            ui->load_errormessage->setStyleSheet("color: red");
+            ui->load_errormessage->setText(qerror_message);
+        }
+
+    }
+    out_image = in_image2;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->stackedWidget->setCurrentIndex(1);
+
+
+    //the merge
+    //they symbolized for the second image by in_image2
+    Image image(out_image.width,out_image.height);
+
+    float x=1 ,y=1;
+    if(out_image.width > in_image2.width) x= (float)out_image.width/in_image2.width;
+    if(out_image.height > in_image2.height) y= (float)out_image.height/in_image2.height;
+    for(int i=0;i<out_image.width;++i){
+        for(int j=0;j<out_image.height;++j){
+            image(i,j,0) = (in_image2(i/x,j/y,0)+out_image(i,j,0))/2;
+            image(i,j,1) = (in_image2(i/x,j/y,1)+out_image(i,j,1))/2;
+            image(i,j,2) = (in_image2(i/x,j/y,2)+out_image(i,j,2))/2;
+        }
+    }
+
+
+    out_image = image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+
+
+
+
 }
+
+
+
+
+
+void MainWindow::on_lab_HoriSlider_L_D_linkActivated(const QString &link)
+{
+
+}
+
+
+
+
 
 
 

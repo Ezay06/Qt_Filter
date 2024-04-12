@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>19</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="load">
      <widget class="QLabel" name="title">
@@ -677,7 +677,7 @@
        <rect>
         <x>50</x>
         <y>190</y>
-        <width>93</width>
+        <width>121</width>
         <height>51</height>
        </rect>
       </property>
@@ -703,12 +703,12 @@
        <rect>
         <x>50</x>
         <y>250</y>
-        <width>93</width>
+        <width>121</width>
         <height>51</height>
        </rect>
       </property>
       <property name="text">
-       <string>Apply</string>
+       <string>Return to menu</string>
       </property>
      </widget>
     </widget>

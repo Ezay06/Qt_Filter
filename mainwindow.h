@@ -50,18 +50,6 @@ private slots:
 
     void on_save_clicked();
 
-    void on_crop_positionx_cursorPositionChanged(int arg1, int arg2);
-
-    void on_crop_positiony_cursorPositionChanged(int arg1, int arg2);
-
-    void on_crop_width_cursorPositionChanged(int arg1, int arg2);
-
-    void on_crop_height_cursorPositionChanged(int arg1, int arg2);
-
-    void on_resize_W_cursorPositionChanged(int arg1, int arg2);
-
-    void on_resize_H_cursorPositionChanged(int arg1, int arg2);
-
     void on_newsave_savesame_clicked();
 
     void on_load_new_clicked();
@@ -103,6 +91,12 @@ private slots:
     void on_wano_button_clicked();
 
     void on_oil_painting_button_clicked();
+
+    void on_brightness_apply_clicked();
+
+    void on_crop_apply_clicked();
+
+    void on_resize_apply_clicked();
 
 protected:
     void closeEvent(QCloseEvent *event) override;

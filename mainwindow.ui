@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="load">
      <widget class="QLabel" name="title">
@@ -602,6 +602,19 @@
        <string/>
       </property>
      </widget>
+     <widget class="QPushButton" name="crop_apply">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>330</y>
+        <width>93</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Apply</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="resize">
      <widget class="QLabel" name="resize_menu">
@@ -683,6 +696,19 @@
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="resize_apply">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>250</y>
+        <width>93</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Apply</string>
       </property>
      </widget>
     </widget>
@@ -949,8 +975,8 @@
      <widget class="QLabel" name="l_lightDark">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>30</y>
+        <x>260</x>
+        <y>20</y>
         <width>181</width>
         <height>20</height>
        </rect>
@@ -962,8 +988,8 @@
      <widget class="QSlider" name="horiSlider_L_D">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>150</y>
+        <x>240</x>
+        <y>140</y>
         <width>201</width>
         <height>16</height>
        </rect>
@@ -981,7 +1007,7 @@
      <widget class="QLabel" name="lab_HoriSlider_L_D">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>320</x>
         <y>150</y>
         <width>41</width>
         <height>16</height>
@@ -994,23 +1020,39 @@
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>120</y>
-        <width>171</width>
+        <x>40</x>
+        <y>110</y>
+        <width>641</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>You can change the slider</string>
+       <string>Press &quot;Darken/Ligthen&quot; to preview the change. Then press &quot;Apply&quot; to return to the menu.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QPushButton" name="apply_LD_Button">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>350</y>
-        <width>80</width>
-        <height>24</height>
+        <x>270</x>
+        <y>180</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Darken/lighten</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="brightness_apply">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>220</y>
+        <width>141</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -1315,7 +1357,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <x>0</x>
      <y>0</y>
      <width>1144</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

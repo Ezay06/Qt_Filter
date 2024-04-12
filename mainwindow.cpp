@@ -611,7 +611,14 @@ void MainWindow::on_oil_painting_button_clicked()
     ui->current_image->setPixmap(pixmap);
 }
 
-
+void MainWindow::on_remove_filters_button_clicked()
+{
+    out_image = in_image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+}
 
 //New save window
 void MainWindow::on_newsave_browse_clicked()
@@ -1206,12 +1213,5 @@ void MainWindow::on_back_to_menu_button_clicked()
 }
 
 
-void MainWindow::on_remove_filters_button_clicked()
-{
-    out_image = in_image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-}
+
 

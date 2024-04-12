@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     //application initialization
     ui->stackedWidget->setCurrentIndex(0);
+    ui->label_og->setVisible(false);
+    ui->label_curr->setVisible(false);
 
     //load initiallization
     ui->original_image->setScaledContents(true);
@@ -120,6 +122,8 @@ void MainWindow::on_load_new_clicked()
         // User clicked "No"
         in_image.saveImage(in_image_path);
         ui->stackedWidget->setCurrentIndex(0);
+        ui->label_og->setVisible(false);
+        ui->label_curr->setVisible(false);
         ui->original_image->clear();
         ui->current_image->clear();
     }
@@ -383,36 +387,7 @@ void MainWindow::on_ball_button_clicked()
 
 void MainWindow::on_skewing_button_clicked()
 {
-    int angle=50;
-    float ang=((89.999 - angle)/180)*3.1416;
-    float slop=tan(ang);
-    Image image2(out_image.width + out_image.height * cos(ang),out_image.height * sin(ang));
-    float n = (float)out_image.height / image2.height;
-    for(int i=0;i<image2.width;++i){
-        for(int j=0;j<image2.height;++j){
-            if((j<slop*i) && j>(slop*i-slop*out_image.width)){
-                image2(i,j,0)=out_image(out_image.width-(i-j/slop),j*n,0);
-                image2(i,j,1)=out_image(out_image.width-(i-j/slop),j*n,1);
-                image2(i,j,2)=out_image(out_image.width-(i-j/slop),j*n,2);
-            }
-
-        }
-    }
-    Image image3(image2.width,image2.height);
-    for(int i=1;i<image3.width;++i){
-        for(int j=1;j<image3.height;++j){
-            image3(i,j,0)=image2(image2.width-i,j,0);
-            image3(i,j,1)=image2(image2.width-i,j,1);
-            image3(i,j,2)=image2(image2.width-i,j,2);
-        }
-    }
-
-    out_image = image3;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-
+    ui->stackedWidget->setCurrentIndex(14);
 }
 
 void MainWindow::on_dropwater_button_clicked()
@@ -602,6 +577,8 @@ void MainWindow::on_newsave_newfilename_returnPressed()
             ui->stackedWidget->setCurrentIndex(0);
             ui->newsave_newfilename->setReadOnly(true);
             ui->newsave_savesuccessuful->setVisible(false);
+            ui->label_og->setVisible(false);
+            ui->label_curr->setVisible(false);
             ui->newsave_newfilename->setText("");
         });
 
@@ -625,6 +602,8 @@ void MainWindow::on_newsave_savesame_clicked()
         ui->stackedWidget->setCurrentIndex(0);
         ui->newsave_newfilename->setReadOnly(true);
         ui->newsave_savesuccessuful->setVisible(false);
+        ui->label_og->setVisible(false);
+        ui->label_curr->setVisible(false);
         ui->newsave_newfilename->setText("");
     });
 }
@@ -697,6 +676,8 @@ void MainWindow::on_load_browse_clicked()
             ui->load_errormessage->setText("");
             ui->stackedWidget->setCurrentIndex(1);
             QPixmap pixmap(qin_image_path);
+            ui->label_og->setVisible(true);
+            ui->label_curr->setVisible(true);
             ui->original_image->setPixmap(pixmap);
             ui->current_image->setPixmap(pixmap);
         }
@@ -1050,7 +1031,7 @@ void MainWindow::on_fancy_button_clicked()
 }
 void MainWindow::on_red_frame_button_clicked()
 {
-    Image image(out_image);
+    Image image(curr_image);
     if(choice == '1'){
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
@@ -1077,7 +1058,6 @@ void MainWindow::on_red_frame_button_clicked()
             }
         }
         out_image = image;
-        curr_image = out_image;
         out_image.saveImage(in_image_path);
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
@@ -1129,7 +1109,6 @@ void MainWindow::on_red_frame_button_clicked()
             }
         }
         out_image = image;
-        curr_image = out_image;
         out_image.saveImage(in_image_path);
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
@@ -1139,7 +1118,7 @@ void MainWindow::on_red_frame_button_clicked()
 }
 void MainWindow::on_green_frame_button_clicked()
 {
-    Image image(out_image);
+    Image image(curr_image);
     if(choice == '1'){
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
@@ -1166,7 +1145,6 @@ void MainWindow::on_green_frame_button_clicked()
             }
         }
         out_image = image;
-        curr_image = out_image;
         out_image.saveImage(in_image_path);
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
@@ -1217,7 +1195,6 @@ void MainWindow::on_green_frame_button_clicked()
             }
         }
         out_image = image;
-        curr_image = out_image;
         out_image.saveImage(in_image_path);
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
@@ -1225,7 +1202,7 @@ void MainWindow::on_green_frame_button_clicked()
 }
 void MainWindow::on_blue_frame_button_clicked()
 {
-    Image image(out_image);
+    Image image(curr_image);
     if(choice == '1'){
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
@@ -1252,7 +1229,6 @@ void MainWindow::on_blue_frame_button_clicked()
             }
         }
         out_image = image;
-        curr_image = out_image;
         out_image.saveImage(in_image_path);
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
@@ -1303,7 +1279,6 @@ void MainWindow::on_blue_frame_button_clicked()
             }
         }
         out_image = image;
-        curr_image = out_image;
         out_image.saveImage(in_image_path);
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
@@ -1312,8 +1287,8 @@ void MainWindow::on_blue_frame_button_clicked()
 void MainWindow::on_back_to_menu_button_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
+    curr_image = out_image;
 }
-
 
 
 
@@ -1398,6 +1373,10 @@ void MainWindow::on_merge_larger_clicked()
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
     ui->merge_image->clear();
+    ui->merge_common->setEnabled(false);
+    ui->merge_larger->setEnabled(false);
+    ui->merge_common->setVisible(false);
+    ui->merge_larger->setVisible(false);
     ui->stackedWidget->setCurrentIndex(1);
 }
 
@@ -1419,6 +1398,102 @@ void MainWindow::on_merge_common_clicked()
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
     ui->merge_image->clear();
+    ui->merge_common->setEnabled(false);
+    ui->merge_larger->setEnabled(false);
+    ui->merge_common->setVisible(false);
+    ui->merge_larger->setVisible(false);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+
+//skew window
+void MainWindow::on_skew_skew_clicked()
+{
+    Image image(curr_image);
+    float angle;
+    QRegularExpression rx("-?[0-9]+");
+    QRegularExpressionValidator angle_validator(rx, ui->skew_angle);
+    ui->skew_angle->setValidator(&angle_validator);
+
+    if (ui->skew_angle->text() == ""){
+        ui->skew_errormessage->setStyleSheet("color: red");
+        ui->skew_errormessage->setText("Please enter all values");
+    }
+
+    else if (!ui->skew_angle->hasAcceptableInput()){
+        ui->skew_errormessage->setStyleSheet("color: red");
+        ui->skew_errormessage->setText("All values must be numbers.");
+    }
+
+    else{
+        angle = ui->skew_angle->text().toFloat();
+        if (abs(angle) >= 90){
+            ui->skew_errormessage->setStyleSheet("color: red");
+            ui->skew_errormessage->setText("The absolute value of the angle must be less than 90.");
+        }
+
+        else{
+            ui->skew_errormessage->setText("");
+            if (angle > 0){
+                float ang=((89.999 - angle)/180)*3.1416;
+                float slop=tan(ang);
+                Image image2(image.width + image.height * cos(ang),image.height * sin(ang));
+                float n = (float)image.height / image2.height;
+                for(int i=0;i<image2.width;++i){
+                    for(int j=0;j<image2.height;++j){
+                        if((j<slop*i) && j>(slop*i-slop*image.width)){
+                            image2(i,j,0)=image(image.width-(i-j/slop),j*n,0);
+                            image2(i,j,1)=image(image.width-(i-j/slop),j*n,1);
+                            image2(i,j,2)=image(image.width-(i-j/slop),j*n,2);
+                        }
+
+                    }
+                }
+                Image image3(image2.width,image2.height);
+                for(int i=1;i<image3.width;++i){
+                    for(int j=1;j<image3.height;++j){
+                        image3(i,j,0)=image2(image2.width-i,j,0);
+                        image3(i,j,1)=image2(image2.width-i,j,1);
+                        image3(i,j,2)=image2(image2.width-i,j,2);
+                    }
+                }
+
+                out_image = image3;
+                out_image.saveImage(in_image_path);
+                QPixmap pixmap(qin_image_path);
+                ui->current_image->setPixmap(pixmap);
+            }
+
+            else if (angle < 0){
+                float ang=(abs(angle)/180)*3.1416;
+                float slop=tan(ang);
+                Image image2(image.width + image.height * cos(ang),image.height * sin(ang));
+                float n = (float)image.height / image2.height;
+                for(int i=image2.width-1;i>=0;--i){
+                    for(int j=image2.height-1;j>=0;--j){
+                        if((j<slop*i) && j>(slop*i-slop*image.width)){
+                            image2(i,j,0)=image(image.width-((image2.width-i)-(image2.height-j)/slop),j*n,0);
+                            image2(i,j,1)=image(image.width-((image2.width-i)-(image2.height-j)/slop),j*n,1);
+                            image2(i,j,2)=image(image.width-((image2.width-i)-(image2.height-j)/slop),j*n,2);
+                        }
+                    }
+                }
+
+                out_image = image2;
+                out_image.saveImage(in_image_path);
+                QPixmap pixmap(qin_image_path);
+                ui->current_image->setPixmap(pixmap);
+            }
+        }
+    }
+}
+
+void MainWindow::on_skew_apply_clicked()
+{
+    curr_image = out_image;
+    ui->skew_angle->setText("");
+    ui->skew_errormessage->setText("");
     ui->stackedWidget->setCurrentIndex(1);
 }
 

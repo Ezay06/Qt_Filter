@@ -120,6 +120,10 @@ private slots:
 
     void on_merge_common_clicked();
 
+    void on_skew_skew_clicked();
+
+    void on_skew_apply_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

@@ -17,7 +17,7 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>0</y>
       <width>731</width>
       <height>691</height>
@@ -960,40 +960,95 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>430</x>
-        <y>80</y>
-        <width>101</width>
+        <x>260</x>
+        <y>30</y>
+        <width>141</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
        <string>Merge two images</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
-     <widget class="QPushButton" name="btnMergeSaveNImage">
+     <widget class="QPushButton" name="merge_browse">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>210</y>
-        <width>181</width>
-        <height>81</height>
+        <x>60</x>
+        <y>120</y>
+        <width>93</width>
+        <height>29</height>
        </rect>
       </property>
       <property name="text">
-       <string>Save as new image</string>
+       <string>Browse...</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="btnMergeSaveSimage">
+     <widget class="QLabel" name="merge_label">
       <property name="geometry">
        <rect>
-        <x>590</x>
-        <y>210</y>
-        <width>141</width>
-        <height>81</height>
+        <x>60</x>
+        <y>100</y>
+        <width>251</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>Save as same image</string>
+       <string>Load the second image:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="merge_image">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>160</y>
+        <width>431</width>
+        <height>251</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="merge_errormessage">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>130</y>
+        <width>291</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="merge_larger">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>440</y>
+        <width>221</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Merge to larger dimensions</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="merge_common">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>510</y>
+        <width>221</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Merge to common dimensions</string>
       </property>
      </widget>
     </widget>
@@ -1555,7 +1610,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <x>0</x>
      <y>0</y>
      <width>1144</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

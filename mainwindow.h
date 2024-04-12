@@ -114,6 +114,12 @@ private slots:
 
     void on_remove_filters_button_clicked();
 
+    void on_merge_browse_clicked();
+
+    void on_merge_larger_clicked();
+
+    void on_merge_common_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

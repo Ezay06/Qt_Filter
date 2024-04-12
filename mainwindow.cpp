@@ -42,6 +42,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     //purple initiallization
     ui->purple_savesuccessful->setVisible(false);
+
+    //merge initiallization
+    ui->merge_image->setScaledContents(true);
+    ui->merge_image->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    ui->merge_common->setEnabled(false);
+    ui->merge_larger->setEnabled(false);
+    ui->merge_common->setVisible(false);
+    ui->merge_larger->setVisible(false);
+
 }
 
 //global variables
@@ -430,65 +439,7 @@ void MainWindow::on_dropwater_button_clicked()
 
 void MainWindow::on_merge_button_clicked()
 {
-    QString filePath = QFileDialog::getOpenFileName(nullptr, "Select a file", QDir::homePath(), "All Files (*)");
-    if (filePath == ""){
-        ui->load_errormessage->setStyleSheet("color: red");
-        ui->load_errormessage->setText("No file selected.");
-    }
-    else{
-
-        try{
-            Image in_image2(filePath.toStdString());
-            //in_image = image;
-            //out_image = in_image;
-            //curr_image = out_image;
-            //in_image_path = filePath.toStdString();
-            //qin_image_path = filePath;
-            ui->load_errormessage->setText("");
-            ui->stackedWidget->setCurrentIndex(1);
-            QPixmap pixmap(qin_image_path);
-            ui->original_image->setPixmap(pixmap);
-            ui->current_image->setPixmap(pixmap);
-        }
-
-        catch(const invalid_argument& e){
-            QString qerror_message = QString::fromStdString(e.what());
-            ui->load_errormessage->setStyleSheet("color: red");
-            ui->load_errormessage->setText(qerror_message);
-        }
-
-    }
-    out_image = in_image2;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-    ui->stackedWidget->setCurrentIndex(1);
-
-
-    //the merge
-    //they symbolized for the second image by in_image2
-    Image image(out_image.width,out_image.height);
-
-    float x=1 ,y=1;
-    if(out_image.width > in_image2.width) x= (float)out_image.width/in_image2.width;
-    if(out_image.height > in_image2.height) y= (float)out_image.height/in_image2.height;
-    for(int i=0;i<out_image.width;++i){
-        for(int j=0;j<out_image.height;++j){
-            image(i,j,0) = (in_image2(i/x,j/y,0)+out_image(i,j,0))/2;
-            image(i,j,1) = (in_image2(i/x,j/y,1)+out_image(i,j,1))/2;
-            image(i,j,2) = (in_image2(i/x,j/y,2)+out_image(i,j,2))/2;
-        }
-    }
-
-
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-
-
-
-
+    ui->stackedWidget->setCurrentIndex(10);
 }
 
 void MainWindow::on_invert_button_clicked()
@@ -1132,7 +1083,7 @@ void MainWindow::on_red_frame_button_clicked()
         ui->current_image->setPixmap(pixmap);
     }
 
-    if(choice = '2'){
+    if(choice == '2'){
         for(int i=0;i<image.width;++i){
             for(int j=0;j<image.height;++j){
 
@@ -1220,7 +1171,7 @@ void MainWindow::on_green_frame_button_clicked()
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
     }
-    if(choice = '2'){
+    if(choice == '2'){
         for(int i=0;i<image.width;++i){
             for(int j=0;j<image.height;++j){
 
@@ -1306,7 +1257,7 @@ void MainWindow::on_blue_frame_button_clicked()
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
     }
-    if(choice = '2'){
+    if(choice == '2'){
         for(int i=0;i<image.width;++i){
             for(int j=0;j<image.height;++j){
 
@@ -1365,4 +1316,109 @@ void MainWindow::on_back_to_menu_button_clicked()
 
 
 
+
+//merge window
+void MainWindow::on_merge_browse_clicked()
+{
+    QString filePath = QFileDialog::getOpenFileName(nullptr, "Select a file", QDir::homePath(), "All Files (*)");
+    if (filePath == ""){
+        ui->merge_errormessage->setStyleSheet("color: red");
+        ui->merge_errormessage->setText("No file selected.");
+    }
+    else{
+
+        try{
+            Image image(filePath.toStdString());
+            in_image2 = image;
+            ui->merge_errormessage->setText("");
+            QPixmap pixmap(filePath);
+            ui->merge_image->setPixmap(pixmap);
+            ui->merge_common->setEnabled(true);
+            ui->merge_larger->setEnabled(true);
+            ui->merge_common->setVisible(true);
+            ui->merge_larger->setVisible(true);
+        }
+
+        catch(const invalid_argument& e){
+            QString qerror_message = QString::fromStdString(e.what());
+            ui->merge_errormessage->setStyleSheet("color: red");
+            ui->merge_errormessage->setText(qerror_message);
+        }
+
+    }
+}
+
+void MainWindow::on_merge_larger_clicked()
+{
+    Image image(out_image);
+    Image image2(in_image2);
+    float x = (float )image.width/image2.width;
+    float y = (float )image.height/image2.height;
+    Image image4((image.width > image2.width)?image.width:image2.width,(image.height > image2.height)?image.height:image2.height);
+    if(image.width>=image2.width && image.height>=image2.height){
+        for(int i=0;i<image4.width;++i){
+            for(int j=0;j<image4.height;++j){
+                image4(i,j,0) = (image(i,j,0)+image2(i/x,j/y,0))/2;
+                image4(i,j,1) = (image(i,j,1)+image2(i/x,j/y,1))/2;
+                image4(i,j,2) = (image(i,j,2)+image2(i/x,j/y,2))/2;
+            }
+        }
+    }
+    else if(image.width<image2.width && image.height<image2.height){
+        for(int i=0;i<image4.width;++i){
+            for(int j=0;j<image4.height;++j){
+                image4(i,j,0) = (image(i*x,j*y,0)+image2(i,j,0))/2;
+                image4(i,j,1) = (image(i*x,j*y,1)+image2(i,j,1))/2;
+                image4(i,j,2) = (image(i*x,j*y,2)+image2(i,j,2))/2;
+            }
+        }
+    }
+    else if(image.width>image2.width && image.height<image2.height){
+        for(int i=0;i<image4.width;++i){
+            for(int j=0;j<image4.height;++j){
+                image4(i,j,0) = (image(i,j*y,0)+image2(i/x,j,0))/2;
+                image4(i,j,1) = (image(i,j*y,1)+image2(i/x,j,1))/2;
+                image4(i,j,2) = (image(i,j*y,2)+image2(i/x,j,2))/2;
+            }
+        }
+    }
+    else if(image.width<image2.width && image.height>image2.height){
+        for(int i=0;i<image4.width;++i){
+            for(int j=0;j<image4.height;++j){
+                image4(i,j,0) = (image(i*x,j,0)+image2(i,j/y,0))/2;
+                image4(i,j,1) = (image(i*x,j,1)+image2(i,j/y,1))/2;
+                image4(i,j,2) = (image(i*x,j,2)+image2(i,j/y,2))/2;
+            }
+        }
+    }
+
+    out_image = image4;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->merge_image->clear();
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+void MainWindow::on_merge_common_clicked()
+{
+    Image image(out_image);
+    Image image2(in_image2);
+    Image image3((image.width<=image2.width)?image.width:image2.width,(image.height<=image2.height)?image.height:image2.height);
+    for(int i=0;i<image3.width;++i){
+        for(int j=0;j<image3.height;++j){
+            image3(i,j,0)=(image(i,j,0)+image2(i,j,0))/2;
+            image3(i,j,1)=(image(i,j,0)+image2(i,j,1))/2;
+            image3(i,j,2)=(image(i,j,0)+image2(i,j,2))/2;
+        }
+    }
+    out_image = image3;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->merge_image->clear();
+    ui->stackedWidget->setCurrentIndex(1);
+}
 

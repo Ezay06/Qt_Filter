@@ -98,6 +98,22 @@ private slots:
 
     void on_resize_apply_clicked();
 
+    void on_frame_button_clicked();
+
+    void on_simple_button_clicked();
+
+    void on_fancy_button_clicked();
+
+    void on_red_frame_button_clicked();
+
+    void on_green_frame_button_clicked();
+
+    void on_blue_frame_button_clicked();
+
+    void on_back_to_menu_button_clicked();
+
+    void on_remove_filters_button_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

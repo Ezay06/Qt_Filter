@@ -611,6 +611,8 @@ void MainWindow::on_oil_painting_button_clicked()
     ui->current_image->setPixmap(pixmap);
 }
 
+
+
 //New save window
 void MainWindow::on_newsave_browse_clicked()
 {
@@ -1069,5 +1071,147 @@ void MainWindow::on_strong_blur_button_clicked()
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
     ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+//Frame window
+void MainWindow::on_frame_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(20);
+}
+char choice;
+void MainWindow::on_simple_button_clicked()
+{
+    choice = '1';
+    ui->stackedWidget->setCurrentIndex(21);
+}
+void MainWindow::on_fancy_button_clicked()
+{
+    choice = '2';
+    ui->stackedWidget->setCurrentIndex(21);
+}
+void MainWindow::on_red_frame_button_clicked()
+{
+    Image image(out_image);
+    if(choice == '1'){
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+
+                if(image.width-image.width/50 <= i ||
+                    image.height-image.height/40 <= j ||
+                    image.width/50 >= i ||
+                    image.width/40 >= j)
+                {
+                    image(i,j,0)=225;
+                    image(i,j,1)=0;
+                    image(i,j,2)=0;
+                }
+
+                if(image.width-image.width/80 <= i ||
+                    image.height-image.height/80 <= j ||
+                    image.width/80 >= i ||
+                    image.width/80 >= j)
+                {
+                    image(i,j,0)=30;
+                    image(i,j,1)=30;
+                    image(i,j,2)=30;
+                }
+            }
+        }
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+
+
+    }
+}
+void MainWindow::on_green_frame_button_clicked()
+{
+    Image image(out_image);
+    if(choice == '1'){
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+
+                if(image.width-image.width/50 <= i ||
+                    image.height-image.height/40 <= j ||
+                    image.width/50 >= i ||
+                    image.width/40 >= j)
+                {
+                    image(i,j,0)=0;
+                    image(i,j,1)=225;
+                    image(i,j,2)=0;
+                }
+
+                if(image.width-image.width/80 <= i ||
+                    image.height-image.height/80 <= j ||
+                    image.width/80 >= i ||
+                    image.width/80 >= j)
+                {
+                    image(i,j,0)=30;
+                    image(i,j,1)=30;
+                    image(i,j,2)=30;
+                }
+            }
+        }
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+
+
+
+    }
+}
+void MainWindow::on_blue_frame_button_clicked()
+{
+    Image image(out_image);
+    if(choice == '1'){
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+
+                if(image.width-image.width/50 <= i ||
+                    image.height-image.height/40 <= j ||
+                    image.width/50 >= i ||
+                    image.width/40 >= j)
+                {
+                    image(i,j,0)=0;
+                    image(i,j,1)=0;
+                    image(i,j,2)=225;
+                }
+
+                if(image.width-image.width/80 <= i ||
+                    image.height-image.height/80 <= j ||
+                    image.width/80 >= i ||
+                    image.width/80 >= j)
+                {
+                    image(i,j,0)=30;
+                    image(i,j,1)=30;
+                    image(i,j,2)=30;
+                }
+            }
+        }
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+void MainWindow::on_back_to_menu_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_remove_filters_button_clicked()
+{
+    out_image = in_image;
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
 }
 

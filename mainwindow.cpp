@@ -1,9 +1,5 @@
-#include <iostream>
 #include <string>
 #include <vector>
-#include <array>
-#include <sstream>
-#include <cctype>
 #include <random>
 #include <cmath>
 using namespace std;
@@ -36,10 +32,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->original_image->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     ui->current_image->setScaledContents(true);
     ui->current_image->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    //ui->horiSlider_L_D->setVisible(false);
 
     //save menu initiallization
     ui->newsave_savesuccessuful->setVisible(false);
+    ui->newsave_newfilename->setEnabled(false);
 
 
     //purple initiallization
@@ -546,7 +542,7 @@ void MainWindow::on_remove_filters_button_clicked()
     ui->current_image->setPixmap(pixmap);
 }
 
-//New save window
+//save window
 void MainWindow::on_newsave_browse_clicked()
 {
     QString folderPath = QFileDialog::getExistingDirectory(nullptr, "Select a folder", QDir::homePath());
@@ -556,7 +552,7 @@ void MainWindow::on_newsave_browse_clicked()
     }
     else{
         newimage_path = folderPath.toStdString() + '\\';
-        ui->newsave_newfilename->setReadOnly(false);
+        ui->newsave_newfilename->setEnabled(true);
         ui->newsave_errormessage->setText("");
     }
 }
@@ -575,7 +571,7 @@ void MainWindow::on_newsave_newfilename_returnPressed()
             ui->original_image->clear();
             ui->current_image->clear();
             ui->stackedWidget->setCurrentIndex(0);
-            ui->newsave_newfilename->setReadOnly(true);
+            ui->newsave_newfilename->setEnabled(false);
             ui->newsave_savesuccessuful->setVisible(false);
             ui->label_og->setVisible(false);
             ui->label_curr->setVisible(false);
@@ -600,7 +596,7 @@ void MainWindow::on_newsave_savesame_clicked()
         ui->original_image->clear();
         ui->current_image->clear();
         ui->stackedWidget->setCurrentIndex(0);
-        ui->newsave_newfilename->setReadOnly(true);
+        ui->newsave_newfilename->setEnabled(false);
         ui->newsave_savesuccessuful->setVisible(false);
         ui->label_og->setVisible(false);
         ui->label_curr->setVisible(false);
@@ -1466,7 +1462,7 @@ void MainWindow::on_skew_skew_clicked()
             }
 
             else if (angle < 0){
-                float ang=(abs(angle)/180)*3.1416;
+                float ang=((89.999-abs(angle))/180)*3.1416;
                 float slop=tan(ang);
                 Image image2(image.width + image.height * cos(ang),image.height * sin(ang));
                 float n = (float)image.height / image2.height;

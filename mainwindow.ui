@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="load">
      <widget class="QLabel" name="title">
@@ -794,8 +794,8 @@
      <widget class="QLabel" name="newsave_menu">
       <property name="geometry">
        <rect>
-        <x>320</x>
-        <y>30</y>
+        <x>230</x>
+        <y>20</y>
         <width>241</width>
         <height>31</height>
        </rect>
@@ -830,7 +830,7 @@
        </rect>
       </property>
       <property name="readOnly">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QPushButton" name="newsave_browse">
@@ -849,8 +849,8 @@
      <widget class="QLabel" name="newsave_savesuccessuful">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>390</y>
+        <x>160</x>
+        <y>400</y>
         <width>391</width>
         <height>20</height>
        </rect>
@@ -1203,12 +1203,12 @@
        <rect>
         <x>90</x>
         <y>220</y>
-        <width>93</width>
+        <width>121</width>
         <height>51</height>
        </rect>
       </property>
       <property name="text">
-       <string>Apply</string>
+       <string>Return to menu</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="skew_angle">
@@ -1219,6 +1219,9 @@
         <width>171</width>
         <height>26</height>
        </rect>
+      </property>
+      <property name="placeholderText">
+       <string>]-90,90[</string>
       </property>
      </widget>
      <widget class="QLabel" name="skew_errormessage">
@@ -1255,12 +1258,12 @@
        <rect>
         <x>90</x>
         <y>100</y>
-        <width>591</width>
+        <width>371</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>Enter the angle then press skew to preview the change. Press apply to return to the menu.</string>
+       <string>Enter the angle then press skew to preview the change.</string>
       </property>
      </widget>
      <widget class="QPushButton" name="skew_skew">
@@ -1268,7 +1271,7 @@
        <rect>
         <x>90</x>
         <y>160</y>
-        <width>93</width>
+        <width>121</width>
         <height>51</height>
        </rect>
       </property>

@@ -390,10 +390,10 @@ void MainWindow::on_skewing_button_clicked()
 void MainWindow::on_dropwater_button_clicked()
 {
     Image image(out_image);
-
+    float coef = 100.0/((image.width<image.height)?image.width:image.height);
     for(int i=0;i<image.width;++i){
         for(int j=0;j<image.height;++j){
-            float c = 0.1 * (sqrt(square(i-image.width/2)+ square(j-image.height/2)));
+            float c = coef * (sqrt(square(i-image.width/2)+ square(j-image.height/2)));
             float z = .8 *( sin(c)/c + 0.24);
             image(i,j,0)*=z;
             image(i,j,1)*=z;
@@ -1462,7 +1462,7 @@ void MainWindow::on_skew_skew_clicked()
         else{
             ui->skew_errormessage->setText("");
             if (angle > 0){
-                float ang=((89.999 - angle)/180)*3.1416;
+                float ang=((90 - angle)/180)*3.1416;
                 float slop=tan(ang);
                 Image image2(image.width + image.height * cos(ang),image.height * sin(ang));
                 float n = (float)image.height / image2.height;
@@ -1492,16 +1492,16 @@ void MainWindow::on_skew_skew_clicked()
             }
 
             else if (angle < 0){
-                float ang=((89.999-abs(angle))/180)*3.1416;
+                float ang=((90.0-abs(angle))/180)*3.1416;
                 float slop=tan(ang);
                 Image image2(image.width + image.height * cos(ang),image.height * sin(ang));
                 float n = (float)image.height / image2.height;
                 for(int i=image2.width-1;i>=0;--i){
                     for(int j=image2.height-1;j>=0;--j){
                         if((j<slop*i) && j>(slop*i-slop*image.width)){
-                            image2(i,j,0)=image(image.width-((image2.width-i)-(image2.height-j)/slop),j*n,0);
-                            image2(i,j,1)=image(image.width-((image2.width-i)-(image2.height-j)/slop),j*n,1);
-                            image2(i,j,2)=image(image.width-((image2.width-i)-(image2.height-j)/slop),j*n,2);
+                            image2(i,j,0)=image((i-j/slop),j*n,0);
+                            image2(i,j,1)=image((i-j/slop),j*n,1);
+                            image2(i,j,2)=image((i-j/slop),j*n,2);
                         }
                     }
                 }

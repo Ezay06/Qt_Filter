@@ -124,6 +124,18 @@ private slots:
 
     void on_skew_apply_clicked();
 
+    void on_save_apply_clicked();
+
+    void on_rotate_apply_clicked();
+
+    void on_blur_apply_clicked();
+
+    void on_remove_frame_button_clicked();
+
+    void on_back_button_clicked();
+
+    void on_remove_blur_button_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

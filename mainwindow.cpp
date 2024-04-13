@@ -58,6 +58,7 @@ Image in_image;
 string in_image_path;
 QString qin_image_path;
 string newimage_path;
+Image before_blur;
 // I added in_image2 for merge filter. me Ahmad
 Image in_image2;
 
@@ -438,6 +439,7 @@ void MainWindow::on_rotate_button_clicked()
 
 void MainWindow::on_blur_button_clicked()
 {
+    before_blur = out_image;
     ui->stackedWidget->setCurrentIndex(19);
 }
 
@@ -604,6 +606,10 @@ void MainWindow::on_newsave_savesame_clicked()
     });
 }
 
+void MainWindow::on_save_apply_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+}
 
 
 //Flip window
@@ -856,6 +862,8 @@ void MainWindow::on_apply_LD_Button_clicked()
 void MainWindow::on_brightness_apply_clicked()
 {
     curr_image = out_image;
+    ui->lab_HoriSlider_L_D->setText(QString::number(50));
+    ui->horiSlider_L_D->setValue(50);
     ui->stackedWidget->setCurrentIndex(1);
 }
 
@@ -880,7 +888,6 @@ void MainWindow::on_degree90_button_clicked()
     out_image.saveImage(in_image_path);
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
-    ui->stackedWidget->setCurrentIndex(1);
 }
 void MainWindow::on_degree180_button_clicked()
 {
@@ -898,7 +905,6 @@ void MainWindow::on_degree180_button_clicked()
     out_image.saveImage(in_image_path);
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
-    ui->stackedWidget->setCurrentIndex(1);
 }
 void MainWindow::on_degree270_button_clicked()
 {
@@ -921,13 +927,16 @@ void MainWindow::on_degree270_button_clicked()
     out_image.saveImage(in_image_path);
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
-    ui->stackedWidget->setCurrentIndex(1);
 }
-
+void MainWindow::on_rotate_apply_clicked()
+{
+       ui->stackedWidget->setCurrentIndex(1);
+}
 
 //Blur window
 void MainWindow::on_light_blur_button_clicked()
 {
+    out_image = before_blur;
     Image image(out_image);
     Image image2(out_image);
     int r=7 , sum=0;
@@ -951,10 +960,10 @@ void MainWindow::on_light_blur_button_clicked()
     out_image.saveImage(in_image_path);
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
-    ui->stackedWidget->setCurrentIndex(1);
 }
 void MainWindow::on_medium_blur_button_clicked()
 {
+    out_image = before_blur;
     Image image(out_image);
     Image image2(out_image);
     int r=10 , sum=0;
@@ -978,10 +987,10 @@ void MainWindow::on_medium_blur_button_clicked()
     out_image.saveImage(in_image_path);
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
-    ui->stackedWidget->setCurrentIndex(1);
 }
 void MainWindow::on_strong_blur_button_clicked()
 {
+    out_image = before_blur;
     Image image(out_image);
     Image image2(out_image);
     int r=13 , sum=0;
@@ -1005,16 +1014,27 @@ void MainWindow::on_strong_blur_button_clicked()
     out_image.saveImage(in_image_path);
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
-    ui->stackedWidget->setCurrentIndex(1);
 }
-
+void MainWindow::on_blur_apply_clicked()
+{
+        ui->stackedWidget->setCurrentIndex(1);
+}
+void MainWindow::on_remove_blur_button_clicked()
+{
+    out_image = before_blur;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+}
 
 //Frame window
+char choice;
+Image before_frame;
 void MainWindow::on_frame_button_clicked()
 {
+    before_frame = out_image;
     ui->stackedWidget->setCurrentIndex(20);
 }
-char choice;
 void MainWindow::on_simple_button_clicked()
 {
     choice = '1';
@@ -1285,7 +1305,17 @@ void MainWindow::on_back_to_menu_button_clicked()
     ui->stackedWidget->setCurrentIndex(1);
     curr_image = out_image;
 }
-
+void MainWindow::on_back_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(20);
+}
+void MainWindow::on_remove_frame_button_clicked()
+{
+    out_image = before_frame;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+}
 
 
 //merge window
@@ -1492,4 +1522,22 @@ void MainWindow::on_skew_apply_clicked()
     ui->skew_errormessage->setText("");
     ui->stackedWidget->setCurrentIndex(1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

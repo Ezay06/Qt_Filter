@@ -384,6 +384,7 @@ void MainWindow::on_ball_button_clicked()
 
 void MainWindow::on_skewing_button_clicked()
 {
+    before_blur = out_image;
     ui->stackedWidget->setCurrentIndex(14);
 }
 
@@ -535,7 +536,7 @@ void MainWindow::on_oil_painting_button_clicked()
     ui->current_image->setPixmap(pixmap);
 }
 
-void MainWindow::on_remove_filters_button_clicked()
+void MainWindow::on_remove_all_filters_button_clicked()
 {
     out_image = in_image;
     curr_image = out_image;
@@ -1047,7 +1048,8 @@ void MainWindow::on_fancy_button_clicked()
 }
 void MainWindow::on_red_frame_button_clicked()
 {
-    Image image(curr_image);
+    out_image = before_frame;
+    Image image(out_image);
     if(choice == '1'){
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
@@ -1134,7 +1136,8 @@ void MainWindow::on_red_frame_button_clicked()
 }
 void MainWindow::on_green_frame_button_clicked()
 {
-    Image image(curr_image);
+    out_image = before_frame;
+    Image image(out_image);
     if(choice == '1'){
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
@@ -1218,7 +1221,8 @@ void MainWindow::on_green_frame_button_clicked()
 }
 void MainWindow::on_blue_frame_button_clicked()
 {
-    Image image(curr_image);
+    out_image = before_frame;
+    Image image(out_image);
     if(choice == '1'){
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
@@ -1522,6 +1526,16 @@ void MainWindow::on_skew_apply_clicked()
     ui->skew_errormessage->setText("");
     ui->stackedWidget->setCurrentIndex(1);
 }
+
+void MainWindow::on_remove_skew_button_clicked()
+{
+    out_image = before_blur;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+    ui->skew_angle->setText("");
+}
+
 
 
 

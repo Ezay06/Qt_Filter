@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>14</number>
     </property>
     <widget class="QWidget" name="load">
      <widget class="QLabel" name="title">
@@ -386,7 +386,7 @@
        <string>Frame filter</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="remove_filters_button">
+     <widget class="QPushButton" name="remove_all_filters_button">
       <property name="geometry">
        <rect>
         <x>520</x>
@@ -396,7 +396,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Remove filters</string>
+       <string>Remove all filters</string>
       </property>
      </widget>
     </widget>
@@ -1215,7 +1215,7 @@
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>220</y>
+        <y>300</y>
         <width>121</width>
         <height>51</height>
        </rect>
@@ -1290,6 +1290,19 @@
       </property>
       <property name="text">
        <string>Skew</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="remove_skew_button">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>230</y>
+        <width>121</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Remove skew</string>
       </property>
      </widget>
     </widget>
@@ -1705,7 +1718,7 @@
      <x>0</x>
      <y>0</y>
      <width>1156</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

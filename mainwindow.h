@@ -112,7 +112,7 @@ private slots:
 
     void on_back_to_menu_button_clicked();
 
-    void on_remove_filters_button_clicked();
+    void on_remove_all_filters_button_clicked();
 
     void on_merge_browse_clicked();
 
@@ -135,6 +135,8 @@ private slots:
     void on_back_button_clicked();
 
     void on_remove_blur_button_clicked();
+
+    void on_remove_skew_button_clicked();
 
 protected:
     void closeEvent(QCloseEvent *event) override;

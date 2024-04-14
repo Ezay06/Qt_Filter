@@ -1339,6 +1339,9 @@
       </property>
      </widget>
      <widget class="QLabel" name="circle_image">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>470</x>

@@ -642,10 +642,13 @@ void MainWindow::on_frame_button_clicked()
                     }
                 }
             }
+            ui->simple_image->setScaledContents(true);
+            ui->simple_image->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
             simple_image = image;
             simple_image.saveImage(in_image_path);
             QPixmap pixmap(qin_image_path);
             ui->simple_image->setPixmap(pixmap);
+
             image = before_frame;
 
             for(int i=0;i<image.width;++i){
@@ -692,10 +695,13 @@ void MainWindow::on_frame_button_clicked()
                     }
                 }
             }
+            ui->fancy_image->setScaledContents(true);
+            ui->fancy_image->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
             fancy_image = image;
             fancy_image.saveImage(in_image_path);
             QPixmap pixmap2(qin_image_path);
             ui->fancy_image->setPixmap(pixmap2);
+
             image = before_frame;
 
             //coef for coefficient the sin
@@ -710,6 +716,8 @@ void MainWindow::on_frame_button_clicked()
                     }
                 }
             }
+            ui->circle_image->setScaledContents(true);
+            ui->circle_image->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
             circle_image = image;
             circle_image.saveImage(in_image_path);
             QPixmap pixmap3(qin_image_path);

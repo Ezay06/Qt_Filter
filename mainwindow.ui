@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>20</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="load">
      <widget class="QLabel" name="load_errormessage">
@@ -1531,7 +1531,7 @@
      <x>0</x>
      <y>0</y>
      <width>1156</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

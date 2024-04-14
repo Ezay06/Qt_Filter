@@ -537,9 +537,10 @@ void MainWindow::on_dropwater_button_clicked()
             for(int j=0;j<image.height;++j){
                 float c = coef * (sqrt(square(i-image.width/2)+ square(j-image.height/2)));
                 float z = .8 *( sin(c)/c + 0.24);
-                image(i,j,0)*=z;
-                image(i,j,1)*=z;
-                image(i,j,2)*=z;
+                image(i,j,0) = (image(i,j,0)*z*3 >255)? 255:image(i,j,0)*z*3;
+                image(i,j,1) = (image(i,j,0)*z*3 >255)? 255:image(i,j,1)*z*3;
+                image(i,j,2) = (image(i,j,0)*z*3 >255)? 255:image(i,j,2)*z*3;
+
             }
         }
 
@@ -1750,24 +1751,15 @@ void MainWindow::on_skew_skew_clicked()
                 float n = (float)image.height / image2.height;
                 for(int i=0;i<image2.width;++i){
                     for(int j=0;j<image2.height;++j){
-                        if((j<slop*i) && j>(slop*i-slop*image.width)){
-                            image2(i,j,0)=image(image.width-(i-j/slop),j*n,0);
-                            image2(i,j,1)=image(image.width-(i-j/slop),j*n,1);
-                            image2(i,j,2)=image(image.width-(i-j/slop),j*n,2);
+                        if((j>image2.height-slop*i) && ((j<image2.height -slop*(i - image.width)))){
+                            image2(i,j,0) = image(i-(image2.height-j)/slop,j*n,0);
+                            image2(i,j,1) = image(i-(image2.height-j)/slop,j*n,1);
+                            image2(i,j,2) = image(i-(image2.height-j)/slop,j*n,2);
                         }
 
                     }
                 }
-                Image image3(image2.width,image2.height);
-                for(int i=1;i<image3.width;++i){
-                    for(int j=1;j<image3.height;++j){
-                        image3(i,j,0)=image2(image2.width-i,j,0);
-                        image3(i,j,1)=image2(image2.width-i,j,1);
-                        image3(i,j,2)=image2(image2.width-i,j,2);
-                    }
-                }
-
-                out_image = image3;
+                out_image = image2;
                 out_image.saveImage(in_image_path);
                 QPixmap pixmap(qin_image_path);
                 ui->current_image->setPixmap(pixmap);

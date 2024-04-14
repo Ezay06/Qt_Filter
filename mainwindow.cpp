@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //application initialization
-    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(1);
     ui->label_og->setVisible(false);
     ui->label_curr->setVisible(false);
 
@@ -61,6 +61,9 @@ string newimage_path;
 Image before_blur;
 // I added in_image2 for merge filter. me Ahmad
 Image in_image2;
+bool first = true;
+char choice;
+Image before_frame;
 
 MainWindow::~MainWindow()
 {
@@ -98,62 +101,539 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 //black and white, old tv, and purple filters require no additional user input; so the algorithms are implemented here in the filters menu.
 void MainWindow::on_load_new_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Would you like to save before loading a new image?");
+    ui->no_image_errormessage->setStyleSheet("");
+    ui->no_image_errormessage->setText("");
+    if(first == true){
+        QString filePath = QFileDialog::getOpenFileName(nullptr, "Select a file", QDir::homePath(), "All Files (*)");
+        if (filePath == ""){
+            ui->load_errormessage->setStyleSheet("color: red");
+            ui->load_errormessage->setText("No file selected.");
+        }
+        else{
 
-    // Add buttons to the dialog
-    msgBox.addButton(QMessageBox::Yes);
-    msgBox.addButton(QMessageBox::No);
+            try{
+                Image image(filePath.toStdString());
+                in_image = image;
+                out_image = in_image;
+                curr_image = out_image;
+                in_image_path = filePath.toStdString();
+                qin_image_path = filePath;
+                ui->load_errormessage->setText("");
+                ui->stackedWidget->setCurrentIndex(1);
+                QPixmap pixmap(qin_image_path);
+                ui->label_og->setVisible(true);
+                ui->label_curr->setVisible(true);
+                ui->original_image->setPixmap(pixmap);
+                ui->current_image->setPixmap(pixmap);
+                first = false;
+            }
 
-    // Set the default button
-    msgBox.setDefaultButton(QMessageBox::Yes);
+            catch(const invalid_argument& e){
+                QString qerror_message = QString::fromStdString(e.what());
+                ui->load_errormessage->setStyleSheet("color: red");
+                ui->load_errormessage->setText(qerror_message);
+            }
 
-    // Execute the dialog modally and get the result
-    int result = msgBox.exec();
+        }
+    }
+    else{
+        QMessageBox msgBox;
+        msgBox.setText("Would you like to save before loading a new image?");
 
-    // Handle the user's choice
-    if (result == QMessageBox::Yes) {
-        // User clicked "Yes"
-        ui->stackedWidget->setCurrentIndex(8);
-    } else if (result == QMessageBox::No) {
-        // User clicked "No"
-        in_image.saveImage(in_image_path);
-        ui->stackedWidget->setCurrentIndex(0);
-        ui->label_og->setVisible(false);
-        ui->label_curr->setVisible(false);
-        ui->original_image->clear();
-        ui->current_image->clear();
+        // Add buttons to the dialog
+        msgBox.addButton(QMessageBox::Yes);
+        msgBox.addButton(QMessageBox::No);
+
+        // Set the default button
+        msgBox.setDefaultButton(QMessageBox::Yes);
+
+        // Execute the dialog modally and get the result
+        int result = msgBox.exec();
+
+        // Handle the user's choice
+        if (result == QMessageBox::Yes) {
+            // User clicked "Yes"
+            ui->stackedWidget->setCurrentIndex(8);
+        } else if (result == QMessageBox::No) {
+            // User clicked "No"
+            in_image.saveImage(in_image_path);
+            ui->stackedWidget->setCurrentIndex(1);
+            ui->label_og->setVisible(false);
+            ui->label_curr->setVisible(false);
+            ui->original_image->clear();
+            ui->current_image->clear();
+            first = true;
+            MainWindow::on_load_new_clicked();
+        }
     }
 }
 
 void MainWindow::on_save_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(8);
+
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        ui->stackedWidget->setCurrentIndex(8);
+    }
+}
+
+void MainWindow::on_remove_all_filters_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        out_image = in_image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
 }
 
 void MainWindow::on_black_and_white_button_clicked()
 {
-    Image image(out_image);
-    for (int i = 0; i < image.width; i++){
-        for (int j = 0; j < image.height; j++){
-            unsigned int avg = 0;
-            for (int c = 0; c < 3; c++){
-                avg += image(i, j, c);
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+        for (int i = 0; i < image.width; i++){
+            for (int j = 0; j < image.height; j++){
+                unsigned int avg = 0;
+                for (int c = 0; c < 3; c++){
+                    avg += image(i, j, c);
+                }
+
+                avg /= 3;
+
+                if (avg <= 127){
+                    image(i, j, 0) = 0;
+                    image(i, j, 1) = 0;
+                    image(i, j, 2) = 0;
+                }
+
+                else{
+                    image(i, j, 0) = 255;
+                    image(i, j, 1) = 255;
+                    image(i, j, 2) = 255;
+                }
+
+
+                }
             }
+            out_image = image;
+            curr_image = out_image;
+            out_image.saveImage(in_image_path);
+            QPixmap pixmap(qin_image_path);
+            ui->current_image->setPixmap(pixmap);
+    }
+}
 
-            avg /= 3;
+void MainWindow::on_flip_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        ui->stackedWidget->setCurrentIndex(3);
+    }
+}
 
-            if (avg <= 127){
-                image(i, j, 0) = 0;
-                image(i, j, 1) = 0;
-                image(i, j, 2) = 0;
+void MainWindow::on_crop_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        ui->stackedWidget->setCurrentIndex(4);
+    }
+}
+
+void MainWindow::on_resize_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        ui->stackedWidget->setCurrentIndex(5);
+    }
+}
+
+void MainWindow::on_purple_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+
+        for (int i = 0; i < image.width; i++){
+            for (int j = 0; j < image.height; j++){
+                int new_r = image(i, j, 0) + 50;
+                int new_b = image(i, j, 2) + 50;
+                int new_g = image(i, j, 1) - 20;
+
+
+                if (new_r > 255){
+                    new_r = 255;
+                }
+                if (new_b > 255){
+                    new_b = 255;
+                }
+                if (new_g < 0){
+                    new_g = 0;
+                }
+
+
+                image(i, j, 0) = new_r;
+                image(i, j, 1) = new_g;
+                image(i, j, 2) = new_b;
             }
+        }
 
-            else{
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_old_tv_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+
+        for (int i = 0; i < image.width; i++){
+            for (int j = 0; j < image.height; j++){
+                for (int c = 0; c < 3; c++){
+                    int pixel_value = image(i, j, c);
+                    default_random_engine generator;
+                    uniform_int_distribution<int> noise(10, 50);
+                    pixel_value = pixel_value + noise(generator);
+                    pixel_value = pixel_value - 30;
+                    pixel_value = pixel_value * 0.8;
+
+                    if (j % 2 == 0){
+                        pixel_value = pixel_value - 75;
+                    }
+                    else{
+                        pixel_value = pixel_value + 75;
+                    }
+
+                    if (pixel_value > 255){
+                        pixel_value = 255;
+                    }
+
+                    if (pixel_value < 0){
+                        pixel_value = 0;
+                    }
+
+                    image(i, j, c) = pixel_value;
+
+
+                }
+            }
+        }
+
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_greyscale_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+
+        for(int i=0;i<image.width;++i){
+
+            for(int j=0;j<image.height;++j){
+
+                //calculate the pixels average
+
+                int x = (image(i,j,0)+image(i,j,1)+image(i,j,2))/3;
+
+                image(i,j,0)=x;
+                image(i,j,1)=x;
+                image(i,j,2)=x;
+
+            }
+        }
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_infrared_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+
+        for(int i=0;i<image.width;i++){
+            for(int j=0;j<image.height;j++){
+
+                image(i, j, 1) = 255 - image(i, j, 0);
+                image(i, j, 2) = 255 - image(i, j, 0);
                 image(i, j, 0) = 255;
-                image(i, j, 1) = 255;
-                image(i, j, 2) = 255;
+
             }
+        }
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_detectEdge_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image.width,out_image.height);
+
+        uint32_t x=0;
+        for(int i=0;i<out_image.width;++i){
+            for(int j=0;j<out_image.height;++j){
+                x += out_image(i,j,0) + out_image(i,j,1) + out_image(i,j,2);
+            }
+        }
+
+        x /= 3 * out_image.width * out_image.height;
+
+        for(int i=0;i<out_image.width;++i){
+            for(int j=0;j<out_image.height;++j){
+
+                out_image(i,j,0)=(out_image(i,j,0)>x)?255:0;
+                out_image(i,j,1)=(out_image(i,j,1)>x)?255:0;
+                out_image(i,j,2)=(out_image(i,j,2)>x)?255:0;
+            }
+        }
+
+
+        for(int i=1;i<out_image.width;i+=1){
+            for(int j=1;j<out_image.height;j+=1){
+
+                int x=( out_image(i,j,0)!=out_image(i-1,j-1,0) || out_image(i,j,0)!=out_image(i-1,j,0) ||
+                         out_image(i,j,0)!=out_image(i,j-1,0)) ? 0 : 255;
+
+                image(i,j,0)=x;
+                image(i,j,1)=x;
+                image(i,j,2)=x;
+            }
+        }
+
+
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+
+}
+
+void MainWindow::on_light_dark_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        ui->stackedWidget->setCurrentIndex(11);
+    }
+}
+
+void MainWindow::on_ball_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        //here take the smaller dimention till the image is square
+        Image image((out_image.width > out_image.height)?out_image.height:out_image.width,
+                    (out_image.width > out_image.height)?out_image.height:out_image.width);
+
+        // assign the half radius
+        int r = 0.5 * image.width;
+
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+                double ball = (sqrt((r * r  - (i - r)*(i - r)  - (j - r)*(j - r) )) / r);
+                image(i, j, 0) = out_image(i, j, 0) * ball;
+                image(i, j, 1) = out_image(i, j, 1) * ball;
+                image(i, j, 2) = out_image(i, j, 2) * ball;
+
+            }
+        }
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_skewing_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        before_blur = out_image;
+        ui->stackedWidget->setCurrentIndex(14);
+    }
+}
+
+void MainWindow::on_dropwater_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+        float coef = 100.0/((image.width<image.height)?image.width:image.height);
+        for(int i=0;i<image.width;++i){
+            for(int j=0;j<image.height;++j){
+                float c = coef * (sqrt(square(i-image.width/2)+ square(j-image.height/2)));
+                float z = .8 *( sin(c)/c + 0.24);
+                image(i,j,0)*=z;
+                image(i,j,1)*=z;
+                image(i,j,2)*=z;
+            }
+        }
+
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_merge_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        ui->stackedWidget->setCurrentIndex(10);
+    }
+}
+
+void MainWindow::on_invert_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+                image(i, j, 0) = 225-image(i, j, 0);
+                image(i, j, 1) = 225-image(i, j, 1);
+                image(i, j, 2) = 225-image(i, j, 2);
+            }
+        }
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_rotate_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        ui->stackedWidget->setCurrentIndex(16);
+    }
+}
+
+void MainWindow::on_blur_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        before_blur = out_image;
+        ui->stackedWidget->setCurrentIndex(19);
+    }
+}
+
+void MainWindow::on_frame_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        before_frame = out_image;
+        ui->stackedWidget->setCurrentIndex(20);
+    }
+}
+
+void MainWindow::on_wano_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+
+                if(image(i,j,1)<206){
+                    image(i, j, 1) = image(i,j,1)+20;
+                }
+                else{
+                    image(i, j, 1) = 225;
+                }
 
 
             }
@@ -163,387 +643,83 @@ void MainWindow::on_black_and_white_button_clicked()
         out_image.saveImage(in_image_path);
         QPixmap pixmap(qin_image_path);
         ui->current_image->setPixmap(pixmap);
-}
-
-void MainWindow::on_flip_button_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(3);
-}
-
-void MainWindow::on_crop_button_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(4);
-}
-
-void MainWindow::on_resize_button_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(5);
-}
-
-void MainWindow::on_purple_button_clicked()
-{
-    Image image(out_image);
-
-    for (int i = 0; i < image.width; i++){
-        for (int j = 0; j < image.height; j++){
-            int new_r = image(i, j, 0) + 50;
-            int new_b = image(i, j, 2) + 50;
-            int new_g = image(i, j, 1) - 20;
-
-
-            if (new_r > 255){
-                new_r = 255;
-            }
-            if (new_b > 255){
-                new_b = 255;
-            }
-            if (new_g < 0){
-                new_g = 0;
-            }
-
-
-            image(i, j, 0) = new_r;
-            image(i, j, 1) = new_g;
-            image(i, j, 2) = new_b;
-        }
     }
-
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-
-}
-
-void MainWindow::on_old_tv_button_clicked()
-{
-    Image image(out_image);
-
-    for (int i = 0; i < image.width; i++){
-        for (int j = 0; j < image.height; j++){
-            for (int c = 0; c < 3; c++){
-                int pixel_value = image(i, j, c);
-                default_random_engine generator;
-                uniform_int_distribution<int> noise(10, 50);
-                pixel_value = pixel_value + noise(generator);
-                pixel_value = pixel_value - 30;
-                pixel_value = pixel_value * 0.8;
-
-                if (j % 2 == 0){
-                    pixel_value = pixel_value - 75;
-                }
-                else{
-                    pixel_value = pixel_value + 75;
-                }
-
-                if (pixel_value > 255){
-                    pixel_value = 255;
-                }
-
-                if (pixel_value < 0){
-                    pixel_value = 0;
-                }
-
-                image(i, j, c) = pixel_value;
-
-
-            }
-        }
-    }
-
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-}
-
-void MainWindow::on_greyscale_button_clicked()
-{
-
-    Image image(out_image);
-
-    for(int i=0;i<image.width;++i){
-
-        for(int j=0;j<image.height;++j){
-
-            //calculate the pixels average
-
-            int x = (image(i,j,0)+image(i,j,1)+image(i,j,2))/3;
-
-            image(i,j,0)=x;
-            image(i,j,1)=x;
-            image(i,j,2)=x;
-
-        }
-    }
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-
-}
-
-void MainWindow::on_infrared_button_clicked()
-{
-    Image image(out_image);
-
-    for(int i=0;i<image.width;i++){
-        for(int j=0;j<image.height;j++){
-
-            image(i, j, 1) = 255 - image(i, j, 0);
-            image(i, j, 2) = 255 - image(i, j, 0);
-            image(i, j, 0) = 255;
-
-        }
-    }
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-}
-
-void MainWindow::on_detectEdge_button_clicked()
-{
-    Image image(out_image.width,out_image.height);
-
-    uint32_t x=0;
-    for(int i=0;i<out_image.width;++i){
-        for(int j=0;j<out_image.height;++j){
-            x += out_image(i,j,0) + out_image(i,j,1) + out_image(i,j,2);
-        }
-    }
-
-    x /= 3 * out_image.width * out_image.height;
-
-    for(int i=0;i<out_image.width;++i){
-        for(int j=0;j<out_image.height;++j){
-
-            out_image(i,j,0)=(out_image(i,j,0)>x)?255:0;
-            out_image(i,j,1)=(out_image(i,j,1)>x)?255:0;
-            out_image(i,j,2)=(out_image(i,j,2)>x)?255:0;
-        }
-    }
-
-
-    for(int i=1;i<out_image.width;i+=1){
-        for(int j=1;j<out_image.height;j+=1){
-
-            int x=( out_image(i,j,0)!=out_image(i-1,j-1,0) || out_image(i,j,0)!=out_image(i-1,j,0) ||
-                     out_image(i,j,0)!=out_image(i,j-1,0)) ? 0 : 255;
-
-            image(i,j,0)=x;
-            image(i,j,1)=x;
-            image(i,j,2)=x;
-        }
-    }
-
-
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-
-
-}
-
-void MainWindow::on_light_dark_button_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(11);
-}
-
-void MainWindow::on_ball_button_clicked()
-{
-    //here take the smaller dimention till the image is square
-    Image image((out_image.width > out_image.height)?out_image.height:out_image.width,
-                (out_image.width > out_image.height)?out_image.height:out_image.width);
-
-    // assign the half radius
-    int r = 0.5 * image.width;
-
-    for (int i = 0; i < image.width; ++i) {
-        for (int j = 0; j < image.height; ++j) {
-            double ball = (sqrt((r * r  - (i - r)*(i - r)  - (j - r)*(j - r) )) / r);
-            image(i, j, 0) = out_image(i, j, 0) * ball;
-            image(i, j, 1) = out_image(i, j, 1) * ball;
-            image(i, j, 2) = out_image(i, j, 2) * ball;
-
-        }
-    }
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-
-}
-
-void MainWindow::on_skewing_button_clicked()
-{
-    before_blur = out_image;
-    ui->stackedWidget->setCurrentIndex(14);
-}
-
-void MainWindow::on_dropwater_button_clicked()
-{
-    Image image(out_image);
-    float coef = 100.0/((image.width<image.height)?image.width:image.height);
-    for(int i=0;i<image.width;++i){
-        for(int j=0;j<image.height;++j){
-            float c = coef * (sqrt(square(i-image.width/2)+ square(j-image.height/2)));
-            float z = .8 *( sin(c)/c + 0.24);
-            image(i,j,0)*=z;
-            image(i,j,1)*=z;
-            image(i,j,2)*=z;
-        }
-    }
-
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-
-}
-
-void MainWindow::on_merge_button_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(10);
-}
-
-void MainWindow::on_invert_button_clicked()
-{
-    Image image(out_image);
-
-    for (int i = 0; i < image.width; ++i) {
-        for (int j = 0; j < image.height; ++j) {
-            image(i, j, 0) = 225-image(i, j, 0);
-            image(i, j, 1) = 225-image(i, j, 1);
-            image(i, j, 2) = 225-image(i, j, 2);
-        }
-    }
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-}
-
-void MainWindow::on_rotate_button_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(16);
-}
-
-void MainWindow::on_blur_button_clicked()
-{
-    before_blur = out_image;
-    ui->stackedWidget->setCurrentIndex(19);
-}
-
-void MainWindow::on_wano_button_clicked()
-{
-    Image image(out_image);
-
-    for (int i = 0; i < image.width; ++i) {
-        for (int j = 0; j < image.height; ++j) {
-
-            if(image(i,j,1)<206){
-                image(i, j, 1) = image(i,j,1)+20;
-            }
-            else{
-                image(i, j, 1) = 225;
-            }
-
-
-        }
-    }
-    out_image = image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
 }
 
 void MainWindow::on_oil_painting_button_clicked()
 {
-    Image image(out_image);
-    Image image2(out_image);
-
-
-    vector<int> intensity(20, 0);
-    vector<int> avR(20, 0);
-    vector<int> avG(20, 0);
-    vector<int> avB(20, 0);
-
-    for (int i = 2; i < image.width - 2; i++) {
-        for (int j = 2; j < image.height - 2; j++) {
-            int curMax = 0;
-            int MaxIndex = 0;
-
-            for (int o = -2; o <= 2; o++) {
-                for (int p = -2; p <= 2; p++) {
-                    int r = image(i + o, j + p, 0);
-                    int g = image(i + o, j + p, 1);
-                    int b = image(i + o, j + p, 2);
-
-
-                    int curintensity = ((r + g + b) / 3) * 20 / 255;
-
-
-                    intensity[curintensity]++;
-
-
-                    avR[curintensity] += r;
-                    avG[curintensity] += g;
-                    avB[curintensity] += b;
-
-
-                }
-            }
-
-
-            for (int k = 0; k < 20; k++) {
-                if (intensity[k] > curMax) {
-                    curMax = intensity[k];
-                    MaxIndex = k;
-                }
-            }
-
-
-            int FR = avR[MaxIndex] / curMax;
-            int FG = avG[MaxIndex] / curMax;
-            int FB = avB[MaxIndex] / curMax;
-
-            image2(i, j, 0) = FR;
-            image2(i, j, 1) = FG;
-            image2(i, j, 2) = FB;
-
-
-            intensity.assign(20, 0);
-            avR.assign(20, 0);
-            avG.assign(20, 0);
-            avB.assign(20, 0);
-        }
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
     }
-    out_image = image2;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
+    else{
+        Image image(out_image);
+        Image image2(out_image);
+
+
+        vector<int> intensity(20, 0);
+        vector<int> avR(20, 0);
+        vector<int> avG(20, 0);
+        vector<int> avB(20, 0);
+
+        for (int i = 2; i < image.width - 2; i++) {
+            for (int j = 2; j < image.height - 2; j++) {
+                int curMax = 0;
+                int MaxIndex = 0;
+
+                for (int o = -2; o <= 2; o++) {
+                    for (int p = -2; p <= 2; p++) {
+                        int r = image(i + o, j + p, 0);
+                        int g = image(i + o, j + p, 1);
+                        int b = image(i + o, j + p, 2);
+
+
+                        int curintensity = ((r + g + b) / 3) * 20 / 255;
+
+
+                        intensity[curintensity]++;
+
+
+                        avR[curintensity] += r;
+                        avG[curintensity] += g;
+                        avB[curintensity] += b;
+
+
+                    }
+                }
+
+
+                for (int k = 0; k < 20; k++) {
+                    if (intensity[k] > curMax) {
+                        curMax = intensity[k];
+                        MaxIndex = k;
+                    }
+                }
+
+
+                int FR = avR[MaxIndex] / curMax;
+                int FG = avG[MaxIndex] / curMax;
+                int FB = avB[MaxIndex] / curMax;
+
+                image2(i, j, 0) = FR;
+                image2(i, j, 1) = FG;
+                image2(i, j, 2) = FB;
+
+
+                intensity.assign(20, 0);
+                avR.assign(20, 0);
+                avG.assign(20, 0);
+                avB.assign(20, 0);
+            }
+        }
+        out_image = image2;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
 }
 
-void MainWindow::on_remove_all_filters_button_clicked()
-{
-    out_image = in_image;
-    curr_image = out_image;
-    out_image.saveImage(in_image_path);
-    QPixmap pixmap(qin_image_path);
-    ui->current_image->setPixmap(pixmap);
-}
 
 //save window
 void MainWindow::on_newsave_browse_clicked()
@@ -573,7 +749,7 @@ void MainWindow::on_newsave_newfilename_returnPressed()
         QTimer::singleShot(3000, this, [this](){
             ui->original_image->clear();
             ui->current_image->clear();
-            ui->stackedWidget->setCurrentIndex(0);
+            ui->stackedWidget->setCurrentIndex(1);
             ui->newsave_newfilename->setEnabled(false);
             ui->newsave_savesuccessuful->setVisible(false);
             ui->label_og->setVisible(false);
@@ -598,7 +774,7 @@ void MainWindow::on_newsave_savesame_clicked()
     QTimer::singleShot(3000, this, [this](){
         ui->original_image->clear();
         ui->current_image->clear();
-        ui->stackedWidget->setCurrentIndex(0);
+        ui->stackedWidget->setCurrentIndex(1);
         ui->newsave_newfilename->setEnabled(false);
         ui->newsave_savesuccessuful->setVisible(false);
         ui->label_og->setVisible(false);
@@ -656,45 +832,6 @@ void MainWindow::on_flip_H_clicked()
     ui->current_image->setPixmap(pixmap);
     ui->stackedWidget->setCurrentIndex(1);
 }
-
-
-
-//load window
-void MainWindow::on_load_browse_clicked()
-{
-    QString filePath = QFileDialog::getOpenFileName(nullptr, "Select a file", QDir::homePath(), "All Files (*)");
-    if (filePath == ""){
-        ui->load_errormessage->setStyleSheet("color: red");
-        ui->load_errormessage->setText("No file selected.");
-    }
-    else{
-
-        try{
-            Image image(filePath.toStdString());
-            in_image = image;
-            out_image = in_image;
-            curr_image = out_image;
-            in_image_path = filePath.toStdString();
-            qin_image_path = filePath;
-            ui->load_errormessage->setText("");
-            ui->stackedWidget->setCurrentIndex(1);
-            QPixmap pixmap(qin_image_path);
-            ui->label_og->setVisible(true);
-            ui->label_curr->setVisible(true);
-            ui->original_image->setPixmap(pixmap);
-            ui->current_image->setPixmap(pixmap);
-        }
-
-        catch(const invalid_argument& e){
-            QString qerror_message = QString::fromStdString(e.what());
-            ui->load_errormessage->setStyleSheet("color: red");
-            ui->load_errormessage->setText(qerror_message);
-        }
-
-    }
-
-}
-
 
 
 //crop window
@@ -1029,13 +1166,6 @@ void MainWindow::on_remove_blur_button_clicked()
 }
 
 //Frame window
-char choice;
-Image before_frame;
-void MainWindow::on_frame_button_clicked()
-{
-    before_frame = out_image;
-    ui->stackedWidget->setCurrentIndex(20);
-}
 void MainWindow::on_simple_button_clicked()
 {
     choice = '1';
@@ -1554,4 +1684,10 @@ void MainWindow::on_remove_skew_button_clicked()
 
 
 
+
+
+void MainWindow::on_no_image_errormessage_linkActivated(const QString &link)
+{
+
+}
 

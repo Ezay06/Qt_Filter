@@ -38,8 +38,6 @@ private slots:
 
     void on_flip_H_clicked();
 
-    void on_load_browse_clicked();
-
     void on_crop_crop_clicked();
 
     void on_resize_resize_clicked();
@@ -137,6 +135,8 @@ private slots:
     void on_remove_blur_button_clicked();
 
     void on_remove_skew_button_clicked();
+
+    void on_no_image_errormessage_linkActivated(const QString &link);
 
 protected:
     void closeEvent(QCloseEvent *event) override;

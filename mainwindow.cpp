@@ -75,7 +75,7 @@ int square(int x){return x * x ;}
 //Close event
 void MainWindow::closeEvent(QCloseEvent *event) {
     // Create a QMessageBox
-    if (ui->stackedWidget->currentIndex() != 0){
+    if (first == false){
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Exit", "Would you like to save the image before you exit?",
                                       QMessageBox::Yes|QMessageBox::No);
@@ -755,6 +755,7 @@ void MainWindow::on_newsave_newfilename_returnPressed()
             ui->label_og->setVisible(false);
             ui->label_curr->setVisible(false);
             ui->newsave_newfilename->setText("");
+            first = true;
         });
 
     }
@@ -780,6 +781,7 @@ void MainWindow::on_newsave_savesame_clicked()
         ui->label_og->setVisible(false);
         ui->label_curr->setVisible(false);
         ui->newsave_newfilename->setText("");
+        first = true;
     });
 }
 

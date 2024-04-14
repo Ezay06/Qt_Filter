@@ -138,6 +138,8 @@ private slots:
 
     void on_no_image_errormessage_linkActivated(const QString &link);
 
+    void on_circle_button_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

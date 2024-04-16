@@ -844,6 +844,46 @@ void MainWindow::on_pixel_button_clicked()
     }
 }
 
+void MainWindow::on_behind_bars_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        Image image(out_image);
+        for(int i=0;i<image.width;++i){
+            for(int j=0;j<image.height;++j){
+                float z = sin(0.2 * j  * i);
+                z = sin(0.1 * i);
+                if(z<0) {
+                    image(i, j, 0) = -255 * z;
+                    image(i, j, 1) = -255 * z;
+                    image(i, j, 2) = -255 * z;
+                }
+            }
+        }
+        out_image = image;
+        curr_image = out_image;
+        out_image.saveImage(in_image_path);
+        QPixmap pixmap(qin_image_path);
+        ui->current_image->setPixmap(pixmap);
+    }
+}
+
+void MainWindow::on_decorate_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        before_frame = out_image;
+        ui->stackedWidget->setCurrentIndex(12);
+    }
+}
+
+
 
 
 //save window
@@ -1775,7 +1815,11 @@ void MainWindow::on_skew_skew_clicked()
                             image2(i,j,1) = image(i-(image2.height-j)/slop,j*n,1);
                             image2(i,j,2) = image(i-(image2.height-j)/slop,j*n,2);
                         }
-
+                        else{
+                            image2(i,j,0)=225;
+                            image2(i,j,1)=225;
+                            image2(i,j,2)=225;
+                        }
                     }
                 }
                 out_image = image2;
@@ -1867,14 +1911,12 @@ void MainWindow::on_pixel_slider_valueChanged(int SlideValue)
     QPixmap pixmap(qin_image_path);
     ui->current_image->setPixmap(pixmap);
 }
-
 void MainWindow::on_pixel_apply_button_clicked()
 {
     before_frame = out_image;
     ui->pixel_slider->setValue(0);
     ui->stackedWidget->setCurrentIndex(1);
 }
-
 void MainWindow::on_pixel_menu_button_clicked()
 {
     out_image = before_frame;
@@ -1883,7 +1925,44 @@ void MainWindow::on_pixel_menu_button_clicked()
 }
 
 
-
+//decorate window
+void MainWindow::on_decorate_slider_valueChanged(int value)
+{
+    ui->lab_deco_slider->setText(QString::number(value));
+}
+void MainWindow::on_decorate_apply_clicked()
+{
+    int value = ui->lab_deco_slider->text().toFloat();
+    if(value!=0){
+        Image image(curr_image);
+        float coef= value;
+        coef /= 10;
+        for(int i=0;i<image.width;++i){
+            for(int j=0;j<image.height;++j){
+                float z = sin(coef * j  * i);
+                if(z>0) {
+                    image(i, j, 0) = 255 * z;
+                    image(i, j, 1) = 255 * z;
+                    image(i, j, 2) = 255 * z;
+                }
+            }
+        }
+        out_image = image;
+    }
+    else{
+        out_image=curr_image;
+    }
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+}
+void MainWindow::on_decorate_menu_button_clicked()
+{
+    curr_image = out_image;
+    ui->lab_deco_slider->setText(QString::number(0));
+    ui->decorate_slider->setValue(0);
+    ui->stackedWidget->setCurrentIndex(1);
+}
 
 
 
@@ -1897,6 +1976,20 @@ void MainWindow::on_no_image_errormessage_linkActivated(const QString &link)
 {
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

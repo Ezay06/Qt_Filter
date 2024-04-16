@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>12</number>
     </property>
     <widget class="QWidget" name="load">
      <widget class="QLabel" name="load_errormessage">
@@ -396,12 +396,38 @@
        <rect>
         <x>50</x>
         <y>610</y>
-        <width>411</width>
+        <width>191</width>
         <height>29</height>
        </rect>
       </property>
       <property name="text">
        <string>Pixel filter</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="behind_bars_button">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>610</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Behind bars filter</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="decorate_button">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>650</y>
+        <width>411</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Decorate filter</string>
       </property>
      </widget>
     </widget>
@@ -1013,7 +1039,101 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="detect_edges"/>
+    <widget class="QWidget" name="detect_edges">
+     <widget class="QPushButton" name="decorate_apply">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>180</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Decorate Image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="decorate_menu_button">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>220</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Return to menu</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="decorate_slider">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>140</y>
+        <width>201</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>1000</number>
+      </property>
+      <property name="singleStep">
+       <number>1</number>
+      </property>
+      <property name="pageStep">
+       <number>1</number>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>641</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Press &quot;Decorate image&quot; to apply the change.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="l_decorate">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>20</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>       Decorate Image</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lab_deco_slider">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>160</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="infrared"/>
     <widget class="QWidget" name="skew">
      <widget class="QPushButton" name="skew_apply">

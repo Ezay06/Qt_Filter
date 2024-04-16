@@ -140,6 +140,8 @@ private slots:
 
     void on_circle_button_clicked();
 
+    void on_menu_button_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

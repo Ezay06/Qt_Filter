@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>10</number>
     </property>
     <widget class="QWidget" name="load">
      <widget class="QLabel" name="load_errormessage">
@@ -876,6 +876,19 @@
        <string>Merge to common dimensions</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="menu_button">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>120</y>
+        <width>131</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Return to menu</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="brightness">
      <widget class="QLabel" name="l_lightDark">
@@ -1531,7 +1544,7 @@
      <x>0</x>
      <y>0</y>
      <width>1156</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

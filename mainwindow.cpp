@@ -1714,6 +1714,12 @@ void MainWindow::on_merge_common_clicked()
     ui->stackedWidget->setCurrentIndex(1);
 }
 
+void MainWindow::on_menu_button_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+
 
 
 //skew window
@@ -1830,6 +1836,9 @@ void MainWindow::on_no_image_errormessage_linkActivated(const QString &link)
 {
 
 }
+
+
+
 
 
 

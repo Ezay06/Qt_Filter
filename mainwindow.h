@@ -142,6 +142,14 @@ private slots:
 
     void on_menu_button_clicked();
 
+    void on_pixel_button_clicked();
+
+    void on_pixel_slider_valueChanged(int value);
+
+    void on_pixel_apply_button_clicked();
+
+    void on_pixel_menu_button_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

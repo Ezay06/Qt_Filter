@@ -832,6 +832,19 @@ void MainWindow::on_oil_painting_button_clicked()
     }
 }
 
+void MainWindow::on_pixel_button_clicked()
+{
+    if (first == true){
+        ui->no_image_errormessage->setStyleSheet("color: red");
+        ui->no_image_errormessage->setText("No image was loaded");
+    }
+    else{
+        before_frame = out_image;
+        ui->stackedWidget->setCurrentIndex(22);
+    }
+}
+
+
 
 //save window
 void MainWindow::on_newsave_browse_clicked()
@@ -1814,12 +1827,59 @@ void MainWindow::on_remove_skew_button_clicked()
 
 
 
+//pixel window
+void MainWindow::on_pixel_slider_valueChanged(int SlideValue)
+{
+    if(SlideValue!=0){
+        Image image(before_frame);
+        int value = 0;
+        value += SlideValue;
+        int b = (value/200.0)*((image.width < image.height)? image.height: image.width);
+        for(int i=0;i<image.width;i+=b){
+            for(int j=0;j<image.height;j+=b){
+                int R=0,G=0,B=0,k = 0, l = 0;
+                for(;(k<b)&&(i+k<image.width);++k){
+                    for(;(l<b) && (l+j<image.height);++l) {
+                        R += image(i + k, j + l, 0);
+                        G += image(i + k, j + l, 1);
+                        B += image(i + k, j + l, 2);
+                    }
+                }
+                R/=  l ;
+                G/=  l ;
+                B/=  l ;
+                for(int k=i;((k<i+b))&&(k<image.width);++k){
+                    for(int l=j;((l<j+b))&&(l<image.height);++l){
+                        image(k,l,0)=R;
+                        image(k,l,1)=G;
+                        image(k,l,2)=B;
+                    }
+                }
+            }
+        }
+        out_image = image;
+    }
+    else{
+        out_image=before_frame;
+    }
+    curr_image = out_image;
+    out_image.saveImage(in_image_path);
+    QPixmap pixmap(qin_image_path);
+    ui->current_image->setPixmap(pixmap);
+}
 
+void MainWindow::on_pixel_apply_button_clicked()
+{
+    ui->pixel_slider->setValue(0);
+    ui->stackedWidget->setCurrentIndex(1);
+}
 
-
-
-
-
+void MainWindow::on_pixel_menu_button_clicked()
+{
+    out_image = before_frame;
+    ui->pixel_slider->setValue(0);
+    ui->stackedWidget->setCurrentIndex(1);
+}
 
 
 
@@ -1836,6 +1896,17 @@ void MainWindow::on_no_image_errormessage_linkActivated(const QString &link)
 {
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

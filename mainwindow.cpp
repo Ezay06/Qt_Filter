@@ -1870,6 +1870,7 @@ void MainWindow::on_pixel_slider_valueChanged(int SlideValue)
 
 void MainWindow::on_pixel_apply_button_clicked()
 {
+    before_frame = out_image;
     ui->pixel_slider->setValue(0);
     ui->stackedWidget->setCurrentIndex(1);
 }

@@ -69,19 +69,6 @@ Image circle_image;
 
 
 
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-    // ui->no_image_errormessage->setStyleSheet("color: red");
-
-
-
 
 MainWindow::~MainWindow()
 {
@@ -119,7 +106,6 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 //black and white, old tv, and purple filters require no additional user input; so the algorithms are implemented here in the filters menu.
 void MainWindow::on_load_new_clicked()
 {
-    ui->line->setStyleSheet("color: white");
     ui->no_image_errormessage->setStyleSheet("");
     ui->no_image_errormessage->setText("");
     if(first == true){

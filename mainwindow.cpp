@@ -1815,11 +1815,6 @@ void MainWindow::on_skew_skew_clicked()
                             image2(i,j,1) = image(i-(image2.height-j)/slop,j*n,1);
                             image2(i,j,2) = image(i-(image2.height-j)/slop,j*n,2);
                         }
-                        else{
-                            image2(i,j,0)=225;
-                            image2(i,j,1)=225;
-                            image2(i,j,2)=225;
-                        }
                     }
                 }
                 out_image = image2;

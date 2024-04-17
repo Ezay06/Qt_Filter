@@ -69,6 +69,19 @@ Image circle_image;
 
 
 
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+    // ui->no_image_errormessage->setStyleSheet("color: red");
+
+
+
 
 MainWindow::~MainWindow()
 {
@@ -106,6 +119,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 //black and white, old tv, and purple filters require no additional user input; so the algorithms are implemented here in the filters menu.
 void MainWindow::on_load_new_clicked()
 {
+    ui->line->setStyleSheet("color: white");
     ui->no_image_errormessage->setStyleSheet("");
     ui->no_image_errormessage->setText("");
     if(first == true){
@@ -1934,6 +1948,8 @@ void MainWindow::on_decorate_apply_clicked()
 {
     int value = ui->lab_deco_slider->text().toFloat();
     if(value!=0){
+        value==1? value=124:0;
+        value==2? value=578:0;
         Image image(curr_image);
         float coef= value;
         coef /= 10;
@@ -1976,8 +1992,6 @@ void MainWindow::on_no_image_errormessage_linkActivated(const QString &link)
 {
 
 }
-
-
 
 
 

@@ -162,6 +162,7 @@ private slots:
 
     void on_decorate_slider_valueChanged(int value);
 
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
